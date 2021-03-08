@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureStore.Models
 {
@@ -12,7 +10,7 @@ namespace FurnitureStore.Models
     {
         #region Properties
         /// <summary>
-        /// Predstavlja primarni kljuc tabele u bazi podataka za salon
+        /// Primarni kljuc tabele za salon
         /// </summary>
         public int Id { get; set; }
         /// <summary>
@@ -44,16 +42,16 @@ namespace FurnitureStore.Models
         /// </summary>
         public string BZR { get; set; }
         /// <summary>
-        /// Strani kljuc ka drugoj tabeli za adresu na kojoj se salon nalazi
+        /// Strani kljuc ka drugoj tabeli za adresu salona
         /// </summary>
-        public int StreetAddressId { get; set; }
+        public int AddressId { get; set; }
         #endregion
 
         #region Navigation Properties
         /// <summary>
         /// Predstavlja adresu na kojoj se salon nalazi
         /// </summary>
-        public virtual StreetAddress StreetAddress { get; set; }
+        public virtual Address Address { get; set; }
         /// <summary>
         /// Predstavlja proizvode koje salon poseduje
         /// </summary>

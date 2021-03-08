@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureStore.Models
 {
@@ -12,11 +10,11 @@ namespace FurnitureStore.Models
     {
         #region Properties
         /// <summary>
-        /// Predstavlja primarni kljuc u tabeli baze podataka za kupljeni proizvod
+        /// Primarni kljuc u tabeli za kupljeni proizvod
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// Cenu kupljenog proizvoda
+        /// Cena kupljenog proizvoda
         /// </summary>
         public decimal Price { get; set; }
         /// <summary>
@@ -27,6 +25,10 @@ namespace FurnitureStore.Models
         /// Naziv salona u kom je proizvod kupljen
         /// </summary>
         public string ShopName { get; set; }
+        /// <summary>
+        /// Strani kljuc ka drugoj tabeli za kupljeni proizvod
+        /// </summary>
+        public int BillId { get; set; }
         #endregion
 
         #region Navigation Properties

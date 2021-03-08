@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿
 namespace FurnitureStore.Models
 {
     /// <summary>
-    /// Predstavlja ulogu koju korisnik ima u online prodavnici
+    /// Predstavlja ulogu koju korisnik ima u prodavnici
     /// </summary>
     public class UserRole
     {
         #region Properties
         /// <summary>
-        /// Predstavlja primarni kljuc u tabeli baze podataka za ulogu korisnika
+        /// Primarni kljuc u tabeli za ulogu korisnika
         /// </summary>
         public byte Id { get; set; }
         /// <summary>

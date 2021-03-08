@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace FurnitureStore.Models
 {
@@ -12,7 +9,7 @@ namespace FurnitureStore.Models
     {
         #region Properties
         /// <summary>
-        /// Predstavlja primarni kljuc tabele u bazi podataka za tip proizvoda
+        /// Primarni kljuc tabele za tip proizvoda
         /// </summary>
         public int Id { get; set; }
         /// <summary>

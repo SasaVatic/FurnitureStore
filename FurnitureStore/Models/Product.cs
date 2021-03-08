@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FurnitureStore.Models
 {
@@ -12,7 +9,7 @@ namespace FurnitureStore.Models
     {
         #region Properties
         /// <summary>
-        /// Primarni kljuc u tabeli baze podataka za proizvod
+        /// Primarni kljuc u tabeli za proizvod
         /// </summary>
         public int Id { get; set; }
         /// <summary>
@@ -24,11 +21,11 @@ namespace FurnitureStore.Models
         /// </summary>
         public string ProductName { get; set; }
         /// <summary>
-        /// Zemlja proizvodnje
+        /// Zemlja proizvodnje proizvoda
         /// </summary>
         public string MadeIn { get; set; }
         /// <summary>
-        /// Godina proizvodnje
+        /// Godina proizvodnje proizvoda
         /// </summary>
         public DateTime ProductionDate { get; set; }
         /// <summary>
@@ -44,11 +41,11 @@ namespace FurnitureStore.Models
         /// </summary>
         public byte[] Picture { get; set; }
         /// <summary>
-        /// Strani kljuc ka tabeli u bazi podataka za salon namestaja
+        /// Strani kljuc ka tabeli za salon namestaja
         /// </summary>
         public int ShopId { get; set; }
         /// <summary>
-        /// Strani kljuc ka tabeli u bazi podataka za tip proizvoda
+        /// Strani kljuc ka tabeli za tip proizvoda
         /// </summary>
         public int ProductTypeId { get; set; }
         #endregion
@@ -59,7 +56,7 @@ namespace FurnitureStore.Models
         /// </summary>
         public virtual Shop Shop { get; set; }
         /// <summary>
-        /// Predstavlja kakvog je tipa dati proizvod
+        /// Predstavlja tip proizvoda
         /// </summary>
         public virtual ProductType ProductType { get; set; }
         #endregion

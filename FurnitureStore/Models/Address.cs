@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace FurnitureStore.Models
 {
     /// <summary>
     /// Predstavlja adresu na kojoj se objekat nalazi
     /// </summary>
-    public class StreetAddress
+    public class Address
     {
         #region Properties
         /// <summary>
-        /// Predstavlja primarni kljuc u tabeli baze podataka za adresu
+        /// Primarni kljuc u tabeli za adresu
         /// </summary>
         public int Id { get; set; }
         /// <summary>
@@ -37,11 +34,11 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Predstavlja korisnika koji zivi na ovoj adresi
         /// </summary>
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
         /// <summary>
         /// Predstavlja salon koji se nalazi na ovoj adresi
         /// </summary>
-        public virtual Shop Shop { get; set; }
+        public virtual ICollection<Shop> Shops { get; set; }
         #endregion
     }
 }

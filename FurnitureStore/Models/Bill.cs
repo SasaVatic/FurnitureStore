@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FurnitureStore.Models
 {
@@ -12,7 +10,7 @@ namespace FurnitureStore.Models
     {
         #region Properties
         /// <summary>
-        /// Primarni kljuc u tabeli baze podataka za racun
+        /// Primarni kljuc u tabeli za racun
         /// </summary>
         public int Id { get; set; }
         /// <summary>
@@ -24,24 +22,20 @@ namespace FurnitureStore.Models
         /// </summary>
         public decimal TotalPrice { get; set; }
         /// <summary>
-        /// Datum kupovine
+        /// Datum kupovine proizvoda
         /// </summary>
         public DateTime PurchaseDate { get; set; }
         /// <summary>
-        /// Strani kljuc ka drugoj tabeli u bazi podataka za kupljeni proizvod
-        /// </summary>
-        public int PurchasedProductId { get; set; }
-        /// <summary>
-        /// Strani kljuc ka drugoj tabeli u bazi podataka za korisnika koji kupuje
+        /// Strani kljuc ka drugoj tabeli za korisnika koji kupuje
         /// </summary>
         public int UserId { get; set; }
         #endregion
 
         #region Navigation Properties
         /// <summary>
-        /// Predstavlja proizvod koji je kupljen
+        /// Predstavlja proizvode koji su kupljeni
         /// </summary>
-        public virtual PurchasedProduct PurchasedProduct { get; set; }
+        public virtual ICollection<PurchasedProduct> PurchasedProducts { get; set; }
         /// <summary>
         /// Predstavlja korisnika koji je kupio proizvod
         /// </summary>
