@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FurnitureStore.Models
 {
@@ -15,10 +16,16 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Naziv tipa proizvoda
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Naziv")]
         public string TypeName { get; set; }
         /// <summary>
         /// Opis tipa proizvoda
         /// </summary>
+        [Required]
+        [StringLength(500)]
+        [Display(Name = "Opis")]
         public string Description { get; set; }
         #endregion
 

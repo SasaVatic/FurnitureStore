@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureStore.Models
@@ -16,30 +17,50 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Korisnicko ime za korisnika
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Korisničko ime")]
         public string Username { get; set; }
         /// <summary>
         /// Lozinka korisnika
         /// </summary>
+        [Required]
+        [StringLength(20)]
+        [Display(Name = "Lozinka")]
+        [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$")]
         public string Password { get; set; }
         /// <summary>
         /// Ime korisnika
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Ime")]
         public string Name { get; set; }
         /// <summary>
         /// Prezime korisnika
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Prezime")]
         public string Surname { get; set; }
         /// <summary>
         /// E-mail adresa korisnika
         /// </summary>
+        [Required]
+        [StringLength(255)]
+        [EmailAddress]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
         /// <summary>
         /// Strani kljuc ka drugoj tabeli za ulogu korisnika
         /// </summary>
+        [Display(Name = "Uloga")]
         public byte UserRoleId { get; set; }
         /// <summary>
         /// Strani kljuc ka drugoj tabeli za adresu korisnika
         /// </summary>
+        [Display(Name = "Adresa")]
         public int AddressId { get; set; }
         #endregion
 

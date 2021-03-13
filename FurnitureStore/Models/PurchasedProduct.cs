@@ -16,18 +16,25 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Cena kupljenog proizvoda
         /// </summary>
+        [Required]
+        [Display(Name = "Cena")]
         public decimal Price { get; set; }
         /// <summary>
         /// Kupljena kolicina proizvoda
         /// </summary>
+        [Required]
+        [Display(Name = "Količina")]
         public int Quantity { get; set; }
         /// <summary>
         /// Naziv salona u kom je proizvod kupljen
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Prodajni salon")]
         public string ShopName { get; set; }
         /// <summary>
         /// Strani kljuc ka drugoj tabeli za kupljeni proizvod
-        /// </summary>
+        /// </summary>        
         public int BillId { get; set; }
         #endregion
 

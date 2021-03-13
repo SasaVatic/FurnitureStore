@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FurnitureStore.Models
 {
@@ -16,18 +17,23 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Porez na kupljeni proizvod u procentima
         /// </summary>
+        [Display(Name = "Porez")]
+        [Range(0,100)]
         public int Tax { get; set; }
         /// <summary>
         /// Ukupna cena sa porezom za dati proizvod
         /// </summary>
+        [Display(Name = "Ukupna cena sa porezom")]
         public decimal TotalPrice { get; set; }
         /// <summary>
         /// Datum kupovine proizvoda
         /// </summary>
+        [Display(Name = "Datum i vreme kupovine")]
         public DateTime PurchaseDate { get; set; }
         /// <summary>
         /// Strani kljuc ka drugoj tabeli za korisnika koji kupuje
         /// </summary>
+        [Display(Name = "Ime kupca")]
         public int UserId { get; set; }
         #endregion
 

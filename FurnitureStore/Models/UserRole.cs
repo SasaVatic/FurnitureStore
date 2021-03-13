@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace FurnitureStore.Models
 {
     /// <summary>
@@ -14,6 +16,9 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Tip uloge koji odredjuje ovlascenja koje korisnik ima na sajtu
         /// </summary>
+        [Required]
+        [StringLength(50)]
+        [Display(Name = "Uloga")]
         public string RoleType { get; set; }
         #endregion
     }
