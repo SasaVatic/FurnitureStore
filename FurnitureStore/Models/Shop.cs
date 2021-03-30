@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureStore.Models
 {
@@ -14,6 +13,7 @@ namespace FurnitureStore.Models
         /// Primarni kljuc tabele za salon
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Naziv salona
         /// </summary>
@@ -21,6 +21,7 @@ namespace FurnitureStore.Models
         [StringLength(50)]
         [Display(Name = "Naziv")]
         public string ShopName { get; set; }
+
         /// <summary>
         /// Ime i prezime vlasnika
         /// </summary>
@@ -28,6 +29,7 @@ namespace FurnitureStore.Models
         [StringLength(100)]
         [Display(Name = "Vlasnik")]
         public string OwnerName { get; set; }
+
         /// <summary>
         /// Broj telefona salona
         /// </summary>        
@@ -36,6 +38,7 @@ namespace FurnitureStore.Models
         [Display(Name = "Broj telefona")]
         [RegularExpression(@"^[0-9]{10}$")]
         public string PhoneNumber { get; set; }
+
         /// <summary>
         /// Email adresa salona
         /// </summary>
@@ -44,6 +47,7 @@ namespace FurnitureStore.Models
         [EmailAddress]
         [Display(Name = "E-mail")]
         public string Email { get; set; }
+
         /// <summary>
         /// Adresa web stranice salona
         /// </summary>
@@ -52,6 +56,7 @@ namespace FurnitureStore.Models
         [Url]
         [Display(Name = "Web stranica")]
         public string WebPageURL { get; set; }
+
         /// <summary>
         /// Poreski identifikacioni broj salona
         /// </summary>
@@ -59,26 +64,23 @@ namespace FurnitureStore.Models
         [Display(Name = "Poreski identifikacioni broj")]
         [RegularExpression(@"^[0-9]{8}$")]
         public int PIB { get; set; }
+
         /// <summary>
         /// Broj ziro racuna salona
         /// </summary>
         [Required]
-        [StringLength(11)]
+        [StringLength(13)]
         [Display(Name = "Broj žiro računa")]
         [RegularExpression(@"^[0-9]{3}-[0-9]{6}-[0-9]{2}$")]
         public string BZR { get; set; }
-        /// <summary>
-        /// Strani kljuc ka drugoj tabeli za adresu salona
-        /// </summary>
-        [Display(Name = "Adresa")]
-        public int AddressId { get; set; }
         #endregion
 
         #region Navigation Properties
         /// <summary>
         /// Predstavlja adresu na kojoj se salon nalazi
         /// </summary>
-        public virtual Address Address { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
+
         /// <summary>
         /// Predstavlja proizvode koje salon poseduje
         /// </summary>

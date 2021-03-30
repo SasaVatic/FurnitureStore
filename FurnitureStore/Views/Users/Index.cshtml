@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Korisnici";
+}
+
+<div class="container-fluid px-5 min-vh-100 bg-light position-relative">
+    @Html.Partial("_SideNavbar")
+    <h2 class="text-center page-title text-primary">Korisnici</h2>
+    <div class="row">
+        <div class="col">
+
+            <div class="modal fade" id="modalDelete">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Obriši</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Da li ste sigurni da želite da obrišete korisnika?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="confirmDelete()">Obriši</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="modalWindow" role="dialog">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content bg-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mTitle">Dodaj korisnika</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-success my-3" data-toggle="modal" data-target="#modalWindow" onclick="popupForm('@Url.Action("AddOrEdit", "Users")')"><i class="fa fa-plus"></i> Dodaj korisnika</button>
+
+            <table id="usersTable" class="table table-bordered table-striped display nowarp w-100">
+                <thead>
+                    <tr>
+                        <th>Korisničko ime</th>
+                        <th>Lozinka</th>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>E-mail</th>
+                        <th>Adresa</th>
+                        <th>Uloga</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval");
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+    <script>
+        let table;
+        $(document).ready(function () {
+            table = $("#usersTable").DataTable({
+                ajax: {
+                    url: "/Users/GetUsers",
+                    type: "GET",
+                    datatype: "json"
+                },
+                columns: [
+                    { data: "Username", className: "dt-center" },
+                    { data: "Password", className: "dt-center" },
+                    { data: "Name", className: "dt-center" },
+                    { data: "Surname", className: "dt-center" },
+                    { data: "Email", className: "dt-center" },
+                    { data: "Address", className: "dt-center" },
+                    { data: "UserRole", className: "dt-center" },
+                    {
+                        data: "Id",
+                        className: "dt-center",
+                        render: function (data) {
+                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalWindow'"
+                                + " onclick=popupForm('@Url.Action("AddOrEdit", "Users")/" + data + "')><i class='fas fa-pencil-alt'></i> Izmeni</button>"
+                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' data-user-id=" + data + "><i class='fa fa-trash'></i> Obriši</button> ";
+                        },
+                        orderable: false,
+                        searchable: false,
+                        width: "150px"
+                    }
+                ],
+                language: {
+                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj korisnika</b></div>"
+                },
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true
+            });
+        });
+        function popupForm(url) {
+            let formDiv = $("#modalWindow .modal-body");
+            $.get(url)
+                .done(function (response) {
+                    let userId = $("#Id", response).val();
+                    $("#mTitle").text((userId == 0) ? "Dodaj korisnika" : "Izmeni korisnika");
+                    formDiv.html(response);
+                });
+        }
+        function submitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.action,
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+
+                            $("#modalWindow").modal("hide");
+                            table.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            });
+                        }
+                    }
+                })
+            }
+            return false;
+        }
+        function confirmDelete() {
+            let id = $(".btn-delete").attr("data-user-id");
+            $.ajax({
+                url: "/Users/Delete/" + id,
+                method: "POST",
+                success: function (data) {
+
+                    table.ajax.reload();
+
+                    $.notify(data.message, {
+                        globalPosition: "top center",
+                        className: "success"
+                    });
+                }
+            });
+        }
+    </script>
+}
+

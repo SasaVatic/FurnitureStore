@@ -1,0 +1,24 @@
+﻿@model FurnitureStore.ViewModels.ProductTypeFormViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "ProductTypes", FormMethod.Post, new { onsubmit = "return submitForm(this)" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeName, new { @class = "control-label" })
+        @Html.EditorFor(model => model.TypeName, new { htmlAttributes = new { @class = "form-control", @id = "typeName" } })
+        @Html.ValidationMessageFor(model => model.TypeName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", size = "5", @id = "description" } )
+        @Html.ValidationMessageFor(model => model.Description)
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-success" value="Sačuvaj" />
+        <input type="reset" class="btn btn-outline-secondary" value="Poništi" />
+    </div>
+}

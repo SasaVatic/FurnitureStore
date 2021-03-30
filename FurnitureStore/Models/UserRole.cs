@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FurnitureStore.Models
 {
@@ -13,6 +12,7 @@ namespace FurnitureStore.Models
         /// Primarni kljuc u tabeli za ulogu korisnika
         /// </summary>
         public byte Id { get; set; }
+
         /// <summary>
         /// Tip uloge koji odredjuje ovlascenja koje korisnik ima na sajtu
         /// </summary>

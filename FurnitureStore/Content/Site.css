@@ -1,24 +1,207 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿/*========== BASE ==========*/
+
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+body {
+    font-family: 'Roboto';
+    overflow-x: hidden;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+a {
+    text-decoration: none;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+a:hover {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+.page-title {
+    font-family: 'Kaushan Script';
+}
+
+.field-validation-error, .input-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border: 1px solid red;
+}
+
+/*--Tables--*/
+
+table tbody td, table thead th {
+    vertical-align: middle !important;
+}
+
+/*========== HOME ==========*/
+
+/*--Nav--*/
+
+.logo-container {
+    position: relative;
+}
+
+.logo-content {
+    display: inline-block;
+    font-size: 1.5rem;
+    transition: 1s ease;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.logo-text {
+    font-family: 'Kaushan Script';
+}
+
+.logo-content > p {
+    font-size: .6rem;
+    cursor: default;
+    letter-spacing: 2px;
+}
+
+/*.navbar-icon-cart {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #9D4EDD;
+}*/
+
+/*========== HOME MAIN ==========*/
+
+.hero-title-container {
+    position: relative;
+    border: 2px solid #8E8C84;
+    width: 60%;
+    padding: 2rem;
+}
+
+ .hero-title-container h1 {
+     font-family: 'Kaushan Script';
+     top: -1.5rem;
+     left: 50%;
+     transform: translateX(-50%);
+     padding: 0 10px;
+ }
+
+.hero-title-container p {
+    margin: 1rem;
+    font-size: 1.5rem;
+    width: 90%;
+}
+
+.btn-hero {
+    padding: .8rem 0;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: .5rem;
+    transition: .3s ease;
+    cursor: pointer;
+    letter-spacing: 2px;
+}
+
+.btn-hero:hover {
+    background-color: #E75A0D;
+    transform: scale(0.97);
+}
+
+@media screen and (max-width: 991px) {
+    .hero-title-container {
+        height: 100% !important;
+        border-top: none;
+        border-bottom: none;
+    }
+}
+
+/*========== SIDE NAV ==========*/
+
+#wrapper {
+    position: absolute;
+    overflow-x: hidden;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    transition: .25s ease-out;
+    max-width: 100%;
+}
+
+#sidebar-wrapper {
+    position: relative;
+    min-height: 100vh;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#wrapper.toggled {
+    left: -15rem;
+}
+
+#menu-toggle {
+    outline: none;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    transition: 0.3s ease;
+}
+
+#menu-toggle:hover {
+    background-color: #E75A0D;
+    transform: scale(0.97);
+}
+
+#btn-close {
+    position: absolute;
+    color: #F8F5F0;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: -1rem;
+}
+
+#btn-close:hover {
+    color: #E75A0D;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
 }

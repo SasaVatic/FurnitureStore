@@ -1,0 +1,70 @@
+﻿@model FurnitureStore.ViewModels.ProductFormViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Products", FormMethod.Post, htmlAttributes: new { onsubmit = "return submitForm(this)", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductKey, new { @class = "control-label" })
+        @Html.EditorFor(model => model.ProductKey, new { htmlAttributes = new { @class = "form-control", @id = "productKey" } })
+        @Html.ValidationMessageFor(model => model.ProductKey)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductName, new { @class = "control-label" })
+        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control", @id = "productName" } })
+        @Html.ValidationMessageFor(model => model.ProductName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.MadeIn, new { @class = "control-label" })
+        @Html.EditorFor(model => model.MadeIn, new { htmlAttributes = new { @class = "form-control", @id = "madeIn" } })
+        @Html.ValidationMessageFor(model => model.MadeIn)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductionYear, new { @class = "control-label" })
+        <select class="form-control" name="ProductionYear" id="productionYear">
+            <option selected>Izaberi godinu proizvodnje</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.ProductionYear)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @id = "price" } })
+        @Html.ValidationMessageFor(model => model.Price)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "quantity" } })
+        @Html.ValidationMessageFor(model => model.Quantity)
+    </div>
+    <div class="form-group">
+        <label for="ProductImage" class="d-block">Slika</label>
+        <img src="@Model.ImageURL" id="targetImage" class="img-fluid w-100"/>
+        <input type="file" name="ProductImage" class="form-control-file mt-3" id="btnImageBrowser"
+               onchange="loadImage(this)" required>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShopId, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.ShopId, new SelectList(Model.Shops, "Id", "ShopName"), "Izaberi salon", htmlAttributes: new { @class = "form-control drop-down", @id = "shopId" })
+        @Html.ValidationMessageFor(model => model.ShopId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductTypeId, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.ProductTypeId, new SelectList(Model.ProductTypes, "Id", "TypeName"), "Izaberi tip nameštaja", htmlAttributes: new { @class = "form-control drop-down", @id = "productTypeId" })
+        @Html.ValidationMessageFor(model => model.ProductTypeId)
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-success" value="Sačuvaj" />
+        <input type="reset" class="btn btn-outline-secondary" value="Poništi" />
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        for (i = new Date().getFullYear(); i >= 1950; i--) {
+            $("#productionYear").append($("<option/>").val(i).html(i));
+        }
+    });
+</script>

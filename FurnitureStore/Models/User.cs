@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FurnitureStore.Models
 {
@@ -14,13 +13,16 @@ namespace FurnitureStore.Models
         /// Primarni kljuc u tabeli za korisnika
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Korisnicko ime za korisnika
         /// </summary>
         [Required]
         [StringLength(50)]
+        //[Remote("UserExists", "Users", ErrorMessage = "User Name already in use")]
         [Display(Name = "Korisničko ime")]
         public string Username { get; set; }
+
         /// <summary>
         /// Lozinka korisnika
         /// </summary>
@@ -30,6 +32,7 @@ namespace FurnitureStore.Models
         [DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$")]
         public string Password { get; set; }
+
         /// <summary>
         /// Ime korisnika
         /// </summary>
@@ -37,6 +40,7 @@ namespace FurnitureStore.Models
         [StringLength(50)]
         [Display(Name = "Ime")]
         public string Name { get; set; }
+
         /// <summary>
         /// Prezime korisnika
         /// </summary>
@@ -44,6 +48,7 @@ namespace FurnitureStore.Models
         [StringLength(50)]
         [Display(Name = "Prezime")]
         public string Surname { get; set; }
+
         /// <summary>
         /// E-mail adresa korisnika
         /// </summary>
@@ -52,16 +57,12 @@ namespace FurnitureStore.Models
         [EmailAddress]
         [Display(Name = "E-mail")]
         public string Email { get; set; }
+
         /// <summary>
         /// Strani kljuc ka drugoj tabeli za ulogu korisnika
         /// </summary>
         [Display(Name = "Uloga")]
         public byte UserRoleId { get; set; }
-        /// <summary>
-        /// Strani kljuc ka drugoj tabeli za adresu korisnika
-        /// </summary>
-        [Display(Name = "Adresa")]
-        public int AddressId { get; set; }
         #endregion
 
         #region Navigation Properties
@@ -69,10 +70,12 @@ namespace FurnitureStore.Models
         /// Predstavlja ulogu koju korisnik ima na sajtu
         /// </summary>
         public virtual UserRole UserRole { get; set; }
+
         /// <summary>
         /// Predstavlja adresu na kojoj korisnik stanuje
         /// </summary>
-        public virtual Address Address { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
+
         /// <summary>
         /// Predstavlja sve racune korisnika za kupljene proizvode
         /// </summary>

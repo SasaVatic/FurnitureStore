@@ -13,6 +13,7 @@ namespace FurnitureStore.Models
         /// Primarni kljuc tabele za tip proizvoda
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Naziv tipa proizvoda
         /// </summary>
@@ -20,6 +21,7 @@ namespace FurnitureStore.Models
         [StringLength(50)]
         [Display(Name = "Naziv")]
         public string TypeName { get; set; }
+
         /// <summary>
         /// Opis tipa proizvoda
         /// </summary>

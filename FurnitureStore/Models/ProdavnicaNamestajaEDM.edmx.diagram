@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ad3bab83e6014752b2422e5d21b278a5" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblAdrese" Width="1.5" PointX="2.625" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblKategorijeNamestaja" Width="1.5" PointX="2.125" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblKomadiNamestaja" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblKorisnici" Width="1.5" PointX="5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblRacuni" Width="1.5" PointX="8.375" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblSaloni" Width="1.5" PointX="0.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProdavnicaNamestajaModel.tblUloge" Width="1.5" PointX="7.375" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblAdrese_tblKorisnici" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblAdrese_tblSaloni" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblKomadiNamestaja_tblKategorijeNamestaja" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblKomadiNamestaja_tblSaloni" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblRacuni_tblKomadiNamestaja" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblKorisnici_tblUloge" ManuallyRouted="false" />
+        <AssociationConnector Association="dbProdavnicaNamestajaModel.FK_tblRacuni_tblKorisnici" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
