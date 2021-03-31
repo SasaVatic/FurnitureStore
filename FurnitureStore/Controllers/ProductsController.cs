@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
 using FurnitureStore.ViewModels;
-using System.Web;
 using System.Web.UI.WebControls;
 using System;
 using System.IO;
@@ -145,21 +144,23 @@ namespace FurnitureStore.Controllers
                 productDb.ProductTypeId = productFormVM.ProductTypeId;
 
                 //Slika
-                var imageDb = _context.UploadImages.SingleOrDefault(x => x.ProductId == productFormVM.Id);
-
                 var fileName = productFormVM.Image;
+                // ako je izmenjena od strane klijenta izvrsi upis u bazu
+                if (fileName != null)
+                {
+                    var imageDb = _context.UploadImages.SingleOrDefault(x => x.ProductId == productFormVM.Id);
+                    string newFileName = Guid.NewGuid() + Path.GetExtension(fileName.FileName);
 
-                string newFileName = Guid.NewGuid() + Path.GetExtension(fileName.FileName);
+                    byte[] imageBytes = null;
 
-                byte[] imageBytes = null;
+                    BinaryReader reader = new BinaryReader(fileName.InputStream);
+                    imageBytes = reader.ReadBytes(fileName.ContentLength);
 
-                BinaryReader reader = new BinaryReader(fileName.InputStream);
-                imageBytes = reader.ReadBytes(fileName.ContentLength);
-
-                imageDb.ImageBytes = imageBytes;
-                imageDb.NewName = newFileName;
-                imageDb.OldName = fileName.FileName;
-                imageDb.ImagePath = "~/Images/" + newFileName;
+                    imageDb.ImageBytes = imageBytes;
+                    imageDb.NewName = newFileName;
+                    imageDb.OldName = fileName.FileName;
+                    imageDb.ImagePath = "~/Images/" + newFileName;
+                }
 
                 _context.SaveChanges();
 
