@@ -77,7 +77,7 @@ table tbody td, table thead th {
     letter-spacing: 2px;
 }
 
-/*.navbar-icon-cart {
+.navbar-icon-cart {
     position: relative;
     width: 40px;
     height: 40px;
@@ -91,7 +91,7 @@ table tbody td, table thead th {
     height: 20px;
     border-radius: 50%;
     background-color: #9D4EDD;
-}*/
+}
 
 /*========== HOME MAIN ==========*/
 

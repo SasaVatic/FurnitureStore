@@ -52,12 +52,48 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.1.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.1.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.1.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.1.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.1.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.1.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -135,97 +171,59 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BillsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
+    <Compile Include="Controllers\ProfitReportController.cs" />
+    <Compile Include="Controllers\ShoppingController.cs" />
     <Compile Include="Controllers\ShopsController.cs" />
     <Compile Include="Controllers\StoresController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="CustomValidation\UniqueBZR.cs" />
+    <Compile Include="CustomValidation\UniquePIB.cs" />
+    <Compile Include="CustomValidation\UniqueProductKey.cs" />
+    <Compile Include="CustomValidation\UniqueTypeName.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103281823271_InitialMigration.cs" />
-    <Compile Include="Migrations\202103281823271_InitialMigration.Designer.cs">
-      <DependentUpon>202103281823271_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202104112122587_CreateDatabase.cs" />
+    <Compile Include="Migrations\202104112122587_CreateDatabase.Designer.cs">
+      <DependentUpon>202104112122587_CreateDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103281904121_PopulateUserRoles.cs" />
-    <Compile Include="Migrations\202103281904121_PopulateUserRoles.Designer.cs">
-      <DependentUpon>202103281904121_PopulateUserRoles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103282212534_EnableCascadeDeleteForAddressTable.cs" />
-    <Compile Include="Migrations\202103282212534_EnableCascadeDeleteForAddressTable.Designer.cs">
-      <DependentUpon>202103282212534_EnableCascadeDeleteForAddressTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103291818317_ChangeBZRColumnLengthConstraint.cs" />
-    <Compile Include="Migrations\202103291818317_ChangeBZRColumnLengthConstraint.Designer.cs">
-      <DependentUpon>202103291818317_ChangeBZRColumnLengthConstraint.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103300220128_ChangeProductionDateNameAndType.cs" />
-    <Compile Include="Migrations\202103300220128_ChangeProductionDateNameAndType.Designer.cs">
-      <DependentUpon>202103300220128_ChangeProductionDateNameAndType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103301647237_DropPictureColumn.cs" />
-    <Compile Include="Migrations\202103301647237_DropPictureColumn.Designer.cs">
-      <DependentUpon>202103301647237_DropPictureColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103301721565_CreateUploadImageTable.cs" />
-    <Compile Include="Migrations\202103301721565_CreateUploadImageTable.Designer.cs">
-      <DependentUpon>202103301721565_CreateUploadImageTable.cs</DependentUpon>
+    <Compile Include="Migrations\202104142347360_SetUniqueConstraints.cs" />
+    <Compile Include="Migrations\202104142347360_SetUniqueConstraints.Designer.cs">
+      <DependentUpon>202104142347360_SetUniqueConstraints.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\FurnitureStoreDbContext.cs" />
-    <Compile Include="Models\ProdavnicaNamestajaEDM.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProdavnicaNamestajaEDM.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProdavnicaNamestajaEDM.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProdavnicaNamestajaEDM.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProdavnicaNamestajaEDM.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\RoleName.cs" />
     <Compile Include="Models\Shop.cs" />
-    <Compile Include="Models\tblAdrese.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblKategorijeNamestaja.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblKomadiNamestaja.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblKorisnici.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblRacuni.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblSaloni.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tblUloge.cs">
-      <DependentUpon>ProdavnicaNamestajaEDM.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ShoppingCartProduct.cs" />
     <Compile Include="Models\UploadImage.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BillFormViewModel.cs" />
     <Compile Include="ViewModels\ProductFormViewModel.cs" />
     <Compile Include="ViewModels\ProductTypeFormViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\ProfitReportViewModel.cs" />
     <Compile Include="ViewModels\ShopFormViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
+    <Compile Include="ViewModels\UserBillViewModel.cs" />
     <Compile Include="ViewModels\UserFormViewModel.cs" />
     <Compile Include="ViewModels\UserRoleViewModel.cs" />
   </ItemGroup>
@@ -238,8 +236,11 @@
     <Content Include="Content\bootstrap-sandstone.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ImagePopup.css" />
+    <Content Include="Content\images\delivery.svg" />
     <Content Include="Content\images\kuhinja.png" />
     <Content Include="Content\images\menu.svg" />
+    <Content Include="Content\images\saw.svg" />
     <Content Include="Content\images\search.svg" />
     <Content Include="Content\images\shopping-cart.svg" />
     <Content Include="Content\images\slajd1.jpg" />
@@ -249,24 +250,58 @@
     <Content Include="Content\images\slajd5.jpg" />
     <Content Include="Content\images\slajd6.jpg" />
     <Content Include="Content\images\sofa.svg" />
+    <Content Include="Content\images\technics.svg" />
     <Content Include="Content\images\user.svg" />
+    <Content Include="Content\Main.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\ProdavnicaNamestajaEDM.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProdavnicaNamestajaEDM.edmx</DependentUpon>
-      <LastGenOutput>ProdavnicaNamestajaEDM.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ProdavnicaNamestajaEDM.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProdavnicaNamestajaEDM.edmx</DependentUpon>
-      <LastGenOutput>ProdavnicaNamestajaEDM.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\customValidation\customValidation.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -286,19 +321,14 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <EntityDeploy Include="Models\ProdavnicaNamestajaEDM.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ProdavnicaNamestajaEDM.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ProdavnicaNamestajaEDM.edmx.diagram">
-      <DependentUpon>ProdavnicaNamestajaEDM.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
     <Content Include="Scripts\jquery-3.5.1.slim.js" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -410,6 +440,41 @@
     <Content Include="Views\Products\ProductForm.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Stores\Index.cshtml" />
+    <Content Include="Views\Shared\_ModalAddOrEdit.cshtml" />
+    <Content Include="Views\Shared\_ModalDelete.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Products\CustomerProductView.cshtml" />
+    <Content Include="Views\Users\EditUserForm.cshtml" />
+    <Content Include="Views\Shared\_ShoppingCart.cshtml" />
+    <Content Include="Views\Shopping\ShoppingCart.cshtml" />
+    <Content Include="Views\Shopping\_PurchaseSuccess.cshtml" />
+    <Content Include="Views\ProfitReport\Index.cshtml" />
+    <Content Include="Views\ProfitReport\ReportForm.cshtml" />
+    <Content Include="Views\Stores\ShowProducts.cshtml" />
+    <Content Include="Views\Bills\Index.cshtml" />
+    <Content Include="Views\Bills\_UserBill.cshtml" />
+    <Content Include="Views\Shops\CustomerShopView.cshtml" />
+    <Content Include="Views\ProductTypes\CustomerProductTypeView.cshtml" />
+    <Content Include="Views\Shared\_ModalPopupImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -428,26 +493,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202103281823271_InitialMigration.resx">
-      <DependentUpon>202103281823271_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202104112122587_CreateDatabase.resx">
+      <DependentUpon>202104112122587_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103281904121_PopulateUserRoles.resx">
-      <DependentUpon>202103281904121_PopulateUserRoles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103282212534_EnableCascadeDeleteForAddressTable.resx">
-      <DependentUpon>202103282212534_EnableCascadeDeleteForAddressTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103291818317_ChangeBZRColumnLengthConstraint.resx">
-      <DependentUpon>202103291818317_ChangeBZRColumnLengthConstraint.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103300220128_ChangeProductionDateNameAndType.resx">
-      <DependentUpon>202103300220128_ChangeProductionDateNameAndType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103301647237_DropPictureColumn.resx">
-      <DependentUpon>202103301647237_DropPictureColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103301721565_CreateUploadImageTable.resx">
-      <DependentUpon>202103301721565_CreateUploadImageTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202104142347360_SetUniqueConstraints.resx">
+      <DependentUpon>202104142347360_SetUniqueConstraints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

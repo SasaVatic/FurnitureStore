@@ -1,14 +1,21 @@
-﻿<div class="" id="wrapper">
+﻿@using FurnitureStore.Models
+
+<div class="pb-3" id="wrapper">
     <div class="text-white bg-primary" id="sidebar-wrapper">
         <div id="btn-close">&times;</div>
         <h2 class="sidebar-heading">MENI</h2>
         <div class="list-group list-group-flush">
-            @Html.ActionLink("Korisnici", "Index", "Users", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
             @Html.ActionLink("Saloni", "Index", "Shops", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
             @Html.ActionLink("Kategorije", "Index", "ProductTypes", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
             @Html.ActionLink("Nameštaj", "Index", "Products", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
-            @Html.ActionLink("Računi", "Index", "Home", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
-            @Html.ActionLink("Izveštaj", "Index", "Home", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
+
+            @*Ako je korisnik u ulozi admina prikazi linkove u if bloku*@
+            @if (ViewContext.HttpContext.User.IsInRole(RoleName.Admin))
+            {
+                @Html.ActionLink("Korisnici", "Index", "Users", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
+                @Html.ActionLink("Računi", "Index", "Bills", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
+                @Html.ActionLink("Izveštaj", "Index", "ProfitReport", null, new { @class = "list-group-item list-group-item-action bg-dark font-weight-normal text-white" })
+            }
         </div>
     </div>
 </div>

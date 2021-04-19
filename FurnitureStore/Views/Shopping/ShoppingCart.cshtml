@@ -1,0 +1,266 @@
+﻿@model FurnitureStore.ViewModels.ShoppingCartViewModel
+@{
+    ViewBag.Title = "Korpa";
+}
+
+@Html.Partial("_PurchaseSuccess")
+
+<div class="container border-primary my-3" id="content-wrapper" @*style="border:1px solid"*@>
+    <hr />
+    <h2 class="text-center page-title text-primary my-4">- Korpa -</h2>
+    <hr />
+    <table class="table table-bordered table-striped display nowarp w-100 bill-table mb-3">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center">Naziv proizvoda</th>
+                <th class="text-center">Ime salona</th>
+                <th class="text-center">Jedinična cena</th>
+                <th></th>
+                <th class="text-center">Količina</th>
+                <th></th>
+                <th class="text-center">Ukupno</th>
+                <th class="text-center">Ukloni</th>
+            </tr>
+        </thead>
+        @*<tbody>
+            @if (Model != null)
+            {
+                if (Model.CartProducts.Any())
+                {
+                    //Ako se stranica refresuje ili joj se pristupi sa druge stranice
+                    //da ne bi dodavao na prethodno izracunat total resetuj total
+                    Model.BillTotalPrice = 0;
+                    foreach (var product in Model.CartProducts)
+                    {
+                        Model.BillTotalPrice += product.TotalPrice;
+                        <tr>
+                            <td class="text-center">@product.ProductName</td>
+                            <td class="text-center">@product.ShopName</td>
+                            <td class="text-center">@product.UnitPrice.ToString("#,##0.00") DIN</td>
+                            <td class="text-center" id="quantity">
+                                <button onclick="addToCart('@Url.Action("AddToCart", "Shopping", new { @id = product.ProductId })')" class="btn-dark mx-2" style="font-size:1rem;width:30px;height:30px;outline:none !important"> + </button>
+                                @product.Quantity
+                                <button onclick="removeFromCart('@Url.Action("RemoveFromCart", "Shopping", new { @id = product.ProductId })')" class="btn-dark mx-2" style="font-size:1rem;width:30px;height:30px;outline:none !important"> - </button>
+                            </td>
+                            <td class="text-center">@product.TotalPrice.ToString("#,##0.00") DIN</td>
+                            <td id="removeBtn" class="text-center font-weight-bolder"
+                                style="font-size: 2rem;cursor:pointer;"
+                                data-product-id="@product.ProductId"
+                                onclick="removeProduct()">
+                                &times;
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="4">
+                            <h3>Ukupno:</h3>
+                        </td>
+                        <td colspan="2">
+                            @Model.BillTotalPrice.ToString("#,##0.00") DIN
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>*@
+    </table>
+    <div class="row">
+        <div class="col">
+            <hr />
+                <h3 class="text-primary font-weight-bolder">
+                    Račun: 
+                    <span class="font-weight-light" id="billTotal">
+                        @if (Model != null && Model.CartProducts.Any())
+                        {
+                            @Model.BillTotalPrice.ToString("#,##0.00 DIN");
+                        }
+                    </span>
+                </h3>
+            <hr />
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        if (Model.CartProducts.Any())
+        {
+            <button class="btn btn-success mb-3 mx-auto d-block btn-buy" style="font-size: 1rem;letter-spacing:3px" onclick="buy()">Kupi</button>
+        }
+    }
+</div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+
+@section scripts
+{
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script>
+        let table;
+        $(document).ready(function () {
+            table = $(".bill-table").DataTable({
+                ajax: {
+                    url: "/Shopping/GetCartProducts",
+                    method: "GET",
+                    datatype: "json"
+                },
+                columns: [
+                    { data: "ProductName", className: "dt-center" },
+                    { data: "ShopName", className: "dt-center" },
+                    {
+                        data: "UnitPrice",
+                        className: "dt-center",
+                        render: function (data) {
+                            var price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data);
+                            return price;
+                        }
+                    },
+                    {
+                        data: "Add",
+                        className: "dt-center",
+                        render: function (data) {
+                            return "<button class='btn-dark' style='font-size:1rem;width:30px;height:30px;'"
+                                + "onclick=addToCart('@Url.Action("AddToCart", "Shopping")/" + data + "')>+</button>";
+                        }
+                    },
+                    { data: "Quantity", className: "dt-center" },
+                    {
+                        data: "Remove",
+                        className: "dt-center",
+                        render: function (data) {
+                            return "<button class='btn-dark' style='font-size:1rem;width:30px;height:30px;'"
+                                + "onclick=removeFromCart('@Url.Action("RemoveFromCart", "Shopping")/" + data + "')>-</button>";
+                        }
+                    },
+                    {
+                        data: "TotalPrice",
+                        className: "dt-center",
+                        render: function (data) {
+                            var price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data);
+                            return price;
+                        }
+                    },
+                    {
+                        data: "ProductId",
+                        className: "dt-center",
+                        render: function (data) {
+                            return "<button id='removeBtn' class='btn-dark'"
+                                + "style='font-size:1rem;width:30px;height:30px;' data-product-id='" + data + "'"
+                                + "onclick='removeProduct()'>&times;</button>"
+                        }
+                    }
+                ],
+                rowReorder: {
+                    selector: 'td:nth-child(1)'
+                },
+                responsive: true,
+                searching: false,
+                paging: false,
+                info: false,
+                bSort: false,
+                language: {
+                    emptyTable: "<div style='font-weight: 500;'>Korpa je prazna</b></div>"
+                },
+            });
+            $("#modalPurchased").on('hidden.bs.modal', function () {
+                location.reload();
+            })
+        });
+        function buy() {
+            $.ajax({
+                url: "/Shopping/Buy",
+                method: "POST",
+                success: function (data) {
+                    if (data.success) {
+                        $("#modalPurchased").modal("show");
+                    }
+                    else {
+                        $.notify(data.messUrlge, {
+                            globalPosition: "top center",
+                            className: "error"
+                        });
+                    }
+                }
+            })
+        }
+        function addToCart(url) {
+            $.ajax({
+                url: url,
+                method: "POST",
+                success: function (data) {
+                    if (data.success) {
+
+                        table.ajax.reload();
+
+                        // konvertuj cenu u odgovarajuci format
+                        let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+
+                        $("#cartItem").text(data.counter);
+                        $("#billTotal").text(price); // ukupna cena za racun
+                    }
+                    else {
+                        // Ako nema na stanju vise obavesti korisnika
+                        $.notify(data.message, {
+                            globalPosition: "top center",
+                            className: "error"
+                        });
+                    }
+                }
+            });
+        }
+        function removeFromCart(url) {
+            $.ajax({
+                url: url,
+                method: "POST",
+                success: function (data) {
+                    if (data.success) {
+
+                        table.ajax.reload();
+
+                        // konvertuj cenu u odgovarajuci format
+                        let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+
+                        $("#cartItem").text(data.counter); // broj proizvoda u korpi
+                        $("#billTotal").text(price); // ukupna cena za racun
+                    }
+                    else {
+                        table.ajax.reload(); // posto je korpa prazna reload-uj tabelu
+
+                        $(".btn-buy").remove(); // posto je tabela prazna ukloni kupi dugme
+                        $("#billTotal").remove(); // posto je tabela prazna ukloni cenu
+                        $("#cartItem").text(data.counter); // vratice 0 pa ce counter biti 0 posto nema nista u korpi
+                    }
+                }
+            });
+        }
+        function removeProduct() {
+            let id = $("#removeBtn").attr("data-product-id");
+            $.ajax({
+                url: "/Shopping/RemoveProduct/" + id,
+                method: "POST",
+                success: function (data) {
+                    if (data.success) {
+
+                        table.ajax.reload();
+
+                        // konvertuj cenu u odgovarajuci format
+                        let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+
+                        $("#cartItem").text(data.counter); // broj proizvoda u korpi
+                        $("#billTotal").text(price); // ukupna cena za racun
+                    }
+                    if (data.isEmpty) {
+
+                        $("#billTotal").remove(); // posto je tabela prazna ukloni cenu
+                        $(".btn-buy").remove(); // posto je tabela prazna ukloni kupi dugme
+                    }
+                }
+            })
+        }
+        function reloadPage() {
+            location.reload(); // posto je kupovina uspesno obavljena osvezi stranicu
+        }
+    </script>
+}

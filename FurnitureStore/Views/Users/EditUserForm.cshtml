@@ -1,0 +1,66 @@
+﻿@model FurnitureStore.ViewModels.UserFormViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Users", FormMethod.Post, new { onsubmit = "return submitForm(this)" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Address.Id)
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.Username, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @id = "userName", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.Username)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "name", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Surname, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @id = "surname", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Surname)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "email", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+    <hr />
+    <h5>Adresa</h5>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address.StreetName, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Address.StreetName, new { htmlAttributes = new { @class = "form-control", @id = "streetName", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Address.StreetName)
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.Address.StreetNumber, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Address.StreetNumber, new { htmlAttributes = new { @class = "form-control", @id = "streetNumber", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Address.StreetNumber)
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Address.ZipCode, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Address.ZipCode, new { htmlAttributes = new { @class = "form-control", @id = "zipCode", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Address.ZipCode)
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.Address.City, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Address.City, new { htmlAttributes = new { @class = "form-control", @id = "streetName", autocomplete = "off" } })
+            @Html.ValidationMessageFor(model => model.Address.City)
+        </div>
+    </div>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserRoleId, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.UserRoleId, new SelectList(Model.UserRoles, "Id", "RoleType", Model.UserRoleId), "Uloga", htmlAttributes: new { @class = "form-control drop-down", @id = "userRoleId" })
+        @Html.ValidationMessageFor(model => model.UserRoleId)
+    </div>
+    <hr />
+    <div class="form-group d-flex justify-content-around mt-4">
+        <input type="submit" class="btn btn-success" value="Sačuvaj" />
+        <input type="reset" class="btn btn-outline-secondary" value="Poništi" />
+    </div>
+}

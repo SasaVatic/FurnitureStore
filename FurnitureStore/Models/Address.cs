@@ -16,7 +16,7 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Naziv ulice u kojoj se objekat nalazi
         /// </summary>
-        [Required(ErrorMessage = "Naziv ulice je obavezan")]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [StringLength(100, ErrorMessage = "Naziv ulice ne sme da sadrži više od 100 karaktera")]
         [Display(Name = "Ulica")]
         public string StreetName { get; set; }
@@ -24,7 +24,7 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Broj ulice u kojoj se objekat nalazi
         /// </summary>
-        [Required(ErrorMessage = "Broj ulice je obavezan")]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [StringLength(maximumLength: 4, ErrorMessage = "Minimalna dužina broja je 1, maksimalna 4 karaktera", MinimumLength = 1)]
         [Display(Name = "Broj")]
         [RegularExpression(@"^[a-zA-Z0-9]{1,4}$")]
@@ -33,7 +33,7 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Postanski kod mesta u kom se objekat nalazi
         /// </summary>
-        [Required(ErrorMessage = "Poštanski kod je obavezan")]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [Display(Name = "Poštanski kod")]
         [RegularExpression(@"^\d{5}$", ErrorMessage = "ZIP kod mora biti petocifreni broj")]
         public int ZipCode { get; set; }
@@ -41,16 +41,16 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Naziv mesta u kom se objekat nalazi
         /// </summary>
-        [Required(ErrorMessage = "Mesto stanovanja je obavezno")]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [StringLength(maximumLength: 100, ErrorMessage = "Mesto stanovanja mora biti između 1 i 100 slova", MinimumLength = 1)]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Mesto može sadržati samo slova")]
+        [RegularExpression(@"^[ERTUIOPŠĐŽĆČLKJHGFDSAZCVBNMmnbvcžćčlkjhgfdsađšpoiuztre\s]+$", ErrorMessage = "Mesto može sadržati samo slova")]
         [Display(Name = "Mesto")]
         public string City { get; set; }
 
         /// <summary>
         /// Strani kljuc ka tabeli Users
         /// </summary>
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Strani kljuc ka tabeli Shops

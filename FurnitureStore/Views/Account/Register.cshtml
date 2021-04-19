@@ -1,0 +1,92 @@
+﻿@model FurnitureStore.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Registruj se";
+}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container my-5">
+        <hr />
+        <h3 class="bg-dark text-center py-2 page-title text-light">Registruj se</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <hr />
+                <h4 class="bg-dark text-center py-2 page-title text-light">Osnovni podaci</h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Surname, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.Surname)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <hr />
+                <h4 class="bg-dark text-center py-2 page-title text-light">Adresa</h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address.StreetName, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.EditorFor(model => model.Address.StreetName, new { htmlAttributes = new { @class = "form-control", @id = "streetName", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Address.StreetName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address.StreetNumber, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.EditorFor(model => model.Address.StreetNumber, new { htmlAttributes = new { @class = "form-control", @id = "streetNumber", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Address.StreetNumber)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address.ZipCode, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.EditorFor(model => model.Address.ZipCode, new { htmlAttributes = new { @class = "form-control", @id = "zipCode", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Address.ZipCode)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address.City, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.EditorFor(model => model.Address.City, new { htmlAttributes = new { @class = "form-control", @id = "streetName", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Address.City)
+                </div>
+            </div>
+        </div>
+        <hr />
+        <h4 class="bg-dark text-center py-2 page-title text-light">Lozinka</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label d-block p-2 font-weight-bold", style = "background:#C6D2DE" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Potvrdi" />
+        </div>
+        <hr />
+    </div>
+    }
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

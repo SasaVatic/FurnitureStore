@@ -1,6 +1,8 @@
-﻿using System;
+﻿using FurnitureStore.CustomValidation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace FurnitureStore.Models
 {
@@ -18,45 +20,48 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Sifra proizvoda
         /// </summary>
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(30, ErrorMessage = "Maksimalna dužina je 30 karaktera" )]
         [Display(Name = "Šifra proizvoda")]
+        [Index(IsUnique = true)]
         public string ProductKey { get; set; }
 
         /// <summary>
         /// Naziv proizvoda
         /// </summary>
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(50, ErrorMessage = "Maksimalna dužina je 50 karaktera")]
         [Display(Name = "Naziv")]
         public string ProductName { get; set; }
 
         /// <summary>
         /// Zemlja proizvodnje proizvoda
         /// </summary>
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(100, ErrorMessage = "Maksimalna dužina je 100 karaktera")]
         [Display(Name = "Zemlja proizvodnje")]
         public string MadeIn { get; set; }
 
         /// <summary>
         /// Godina proizvodnje proizvoda
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Polje je obavezno")]
         [Display(Name = "Godina proizvodnje")]
         public int ProductionYear { get; set; }
 
         /// <summary>
         /// Cena proizvoda
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [Range(1, 1000000, ErrorMessage = "Minimalna cena je 1 maksimlana 1000000")]
         [Display(Name = "Cena")]
         public decimal Price { get; set; }
 
         /// <summary>
         /// Kolicina proizvoda u zalihama
         /// </summary>
-        [Range(0, 500)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [Range(0, 500, ErrorMessage = "Minimalna količina je 0 maksimlana 500")]
         [Display(Name = "Količina")]
         public int Quantity { get; set; }
 

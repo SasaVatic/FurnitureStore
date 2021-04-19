@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FurnitureStore.Models
@@ -9,26 +10,7 @@ namespace FurnitureStore.Models
     public class Bill
     {
         #region Properties
-        /// <summary>
-        /// Primarni kljuc u tabeli za racun
-        /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Kupljena kolicina
-        /// </summary>
-        [Required(ErrorMessage = "Količina je obavezna")]
-        [Range(1, 500)]
-        [Display(Name = "Količina")]
-        public int Quantity { get; set; }
-
-        /// <summary>
-        /// Cena kupljenog proizvoda
-        /// </summary>        
-        [Required]
-        [Display(Name = "Cena")]
-        public decimal Price { get; set; }
-
         /// <summary>
         /// Porez na kupljeni proizvod u procentima
         /// </summary>
@@ -49,31 +31,17 @@ namespace FurnitureStore.Models
         public DateTime PurchaseDate { get; set; }
 
         /// <summary>
-        /// Naziv salona u kom je proizvod kupljen
-        /// </summary>
-        [Required]
-        [StringLength(50)]
-        [Display(Name = "Prodajni salon")]
-        public string ShopName { get; set; }
-
-        /// <summary>
         /// Strani kljuc ka drugoj tabeli za korisnika koji kupuje
         /// </summary>
         [Display(Name = "Ime kupca")]
-        public int UserId { get; set; }
-
-        /// <summary>
-        /// Strani kljuc ka drugoj tabeli za proizvod koji se kupuje
-        /// </summary>
-        [Display(Name = "Naziv proizvoda")]
-        public int ProductId { get; set; }
+        public string UserId { get; set; }
         #endregion
 
         #region Navigation Properties
         /// <summary>
-        /// Predstavlja proizvod koji je kupljen
+        /// Predstavlja proizvode koji su kupljeni
         /// </summary>
-        public virtual Product Product { get; set; }
+        public virtual ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; }
 
         /// <summary>
         /// Predstavlja korisnika koji je kupio proizvod

@@ -1,4 +1,5 @@
-﻿using FurnitureStore.Models;
+﻿using FurnitureStore.CustomValidation;
+using FurnitureStore.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace FurnitureStore.ViewModels
@@ -8,13 +9,14 @@ namespace FurnitureStore.ViewModels
         #region Properties
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(50, ErrorMessage = "Maksimalna dužina opisa je 500 karaktera")]
         [Display(Name = "Naziv")]
+        [UniqueTypeName(ErrorMessage = "Kategorija sa istim nazivom već postoji")]
         public string TypeName { get; set; }
 
-        [Required]
-        [StringLength(500)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(500, ErrorMessage = "Maksimalna dužina opisa je 500 karaktera")]
         [Display(Name = "Opis")]
         public string Description { get; set; }
         #endregion

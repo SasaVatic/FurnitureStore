@@ -8,21 +8,20 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="text-primary">
+<body class="text-primary bg-light">
     @Html.Partial("_NavBar")
     <main class="container-fluid p-0 border-0 position-relative">
         @RenderBody()
     </main>
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    <footer class="fixed-bottom text-center bg-primary">
+        <p class="text-white m-0">&copy; @DateTime.Now.Year - Sofa</p>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script>
-        // SIDEBAR-NAV SCRIPT
+        //#region Skripta za SideNavbar
         $(document).ready(function () {
             $("#menu-toggle").click(function (e) {
                 e.preventDefault();
@@ -34,6 +33,7 @@
                 $("#btn-close").attr("hidden", true);
             })
         });
+        //#endregion
     </script>
 </body>
 </html>

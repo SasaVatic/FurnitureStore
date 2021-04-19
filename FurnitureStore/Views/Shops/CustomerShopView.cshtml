@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Saloni";
+}
+
+<!--#region HTML za stranicu saloni namestaja-->
+<div class="container-fluid px-5 min-vh-100 bg-light position-relative pb-3">
+    @Html.Partial("_SideNavbar")
+    <hr />
+    <h2 class="text-center page-title text-light bg-dark py-2">- Saloni -</h2>
+    <hr />
+    <div class="row">
+        <div class="col">
+
+            <!--#region Tabela za salone namestaja-->
+
+            <table id="shopsTable" class="table display nowarp w-100">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Naziv salona</th>
+                        <th>Vlasnik</th>
+                        <th>Adresa</th>
+                        <th>Telefon</th>
+                        <th>E-mail</th>
+                        <th>Web stranica</th>
+                        <th>Poreski identifikacioni broj</th>
+                        <th>Broj žiro računa</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+            <!--#endregion-->
+        </div>
+    </div>
+    <hr />
+</div>
+<!--#endregion-->
+<!--#region CSS linkovi za DataTable-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+<!--#endregion-->
+
+@section scripts
+{
+    <!--#region Skripte za validaciju, DataTable i notifikacije -->
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <!--#endregion-->
+    <!--#region Glavna skripta-->
+
+    <script>
+        let table;
+        $(document).ready(function () {
+
+            //#region Dobavljanje podataka i popuna tabele za salone namestaja
+
+            table = $("#shopsTable").DataTable({
+                ajax: {
+                    url: "/Shops/GetShops",
+                    type: "GET",
+                    datatype: "json"
+                },
+                columns: [
+                    { data: "ShopName", className: "dt-center" },
+                    { data: "OwnerName", className: "dt-center table-primary" },
+                    { data: "Address", className: "dt-center" },
+                    { data: "PhoneNumber", className: "dt-center table-primary" },
+                    { data: "Email", className: "dt-center" },
+                    {
+                        data: "WebPageURL",
+                        className: "dt-center table-primary",
+                        render: function (data) {
+                            return "<a href='" + data + "' target='_blank' class='text-info'>" + data + "</a>";
+                        }
+                    },
+                    { data: "PIB", className: "dt-center" },
+                    { data: "BZR", className: "dt-center table-primary" },
+                    {
+                        data: "Id",
+                        className: "dt-center",
+                        render: function (data) {
+                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalAddOrEdit'"
+                                + " onclick=popupForm('@Url.Action("AddOrEdit", "Shops")/" + data + "')><i class='fas fa-pencil-alt'></i> Izmeni</button>"
+                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' data-user-id=" + data + "><i class='fa fa-trash'></i> Obriši</button> ";
+                        },
+                        orderable: false,
+                        searchable: false,
+                        width: "150px"
+                    }
+                ],
+                language: {
+                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj salon</b></div>",
+                    "info": "Od _START_ do _END_ ukupno _TOTAL_",
+                    "infoEmpty": "Od 0 do 0 ukupno 0",
+                    "zeroRecords": "Traženi pojam ne postoji"
+                },
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                lengthMenu: [[3, 6, 9, -1], [3, 6, 9]],
+                oLanguage: {
+                    "oPaginate": {
+                        "sNext": "Sledeća",
+                        "sPrevious": "Prethodna"
+                    },
+                    "sProcessing": "Tabela je trenutno zauzeta",
+                    "sLoadingRecords": "Učitavanje...",
+                    "sLengthMenu": 'Prikaži <select>' +
+                        '<option value="3">3</option>' +
+                        '<option value="6">6</option>' +
+                        '<option value="-1">9</option>' +
+                        '</select> salona',
+                    "sZeroRecords": "Nema traženih rezultata u pretrazi"
+                },
+                responsive: true,
+                initComplete: function () {
+                    // Apply the search
+                    this.api().columns().every(function () {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "dom": '<"top"l>rt<"bottom"ip><"clear">'
+            });
+
+            $('#shopsTable tfoot th').each(function (index) {
+                if (index == 0 || index == 1 || index == 2
+                    || index == 3 || index == 6 || index == 7) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Pretraga" />');
+                }
+            });
+            //#endregion
+        });
+    </script>
+    <!--#endregion-->
+}
+

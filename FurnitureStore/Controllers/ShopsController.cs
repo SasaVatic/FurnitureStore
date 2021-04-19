@@ -1,15 +1,18 @@
 ﻿using FurnitureStore.Models;
 using FurnitureStore.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FurnitureStore.Controllers
 {
+    /// <summary>
+    /// Kontroler za salone namestaja
+    /// </summary>
     public class ShopsController : Controller
     {
+        #region Konekcija ka bazi
+
         private readonly FurnitureStoreDbContext _context;
         public ShopsController()
         {
@@ -19,15 +22,27 @@ namespace FurnitureStore.Controllers
         {
             _context.Dispose();
         }
-        // GET: Shops
+        #endregion
+
+        // GET: /Shops
+        #region Metoda za dobavljanje Index view-a za salone namestaja
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole(RoleName.Admin))
+            {
+                return View();
+            }
+            return View("CustomerShopView");
         }
+        #endregion
+
+        // GET: /Shops/GetShops
+        #region Metoda za dobavljanje podataka za tabelu salona namestaja
+        [HttpGet]
         public ActionResult GetShops()
         {
             var shops = _context.Shops.ToList();
-            var addresses = _context.StreetAddresses.ToList();
+            var addresses = _context.Addresses.ToList();
 
             var shopsQuery = from s in shops
                              from a in addresses
@@ -47,8 +62,13 @@ namespace FurnitureStore.Controllers
 
             return Json(new { data = shopsQuery }, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        // GET: /Shops/AddOrEdit/1
+        #region Metoda za dobavljanje ShopForm view-a za dodavanje ili izmenu salona namestaja
 
         [HttpGet]
+        [Authorize(Roles = RoleName.Admin)]
         public ActionResult AddOrEdit(int id = 0)
         {
             if (id == 0)
@@ -63,7 +83,7 @@ namespace FurnitureStore.Controllers
             else
             {
                 var shopDb = _context.Shops.SingleOrDefault(x => x.Id == id);
-                var addressDb = _context.StreetAddresses.SingleOrDefault(x => x.ShopId == shopDb.Id);
+                var addressDb = _context.Addresses.SingleOrDefault(x => x.ShopId == shopDb.Id);
 
                 var existingShop = new ShopFormViewModel(shopDb)
                 {
@@ -73,6 +93,10 @@ namespace FurnitureStore.Controllers
                 return View("ShopForm", existingShop);
             }
         }
+        #endregion
+
+        // POST: /Shops/AddOrEdit
+        #region Metoda za dodavanje ili izmenu salona u bazi
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,6 +104,24 @@ namespace FurnitureStore.Controllers
         {
             if (shopFormVM.Id == 0)
             {
+                if (!ModelState.IsValid)
+                {
+                    // Za validaciju - ako prilikom submita nisu prosledjena validna unique polja ModelState nece biti validan
+                    // i vratice na view json sa odgovarajucim podacima
+                    if (!ModelState.IsValidField("BZR") && !ModelState.IsValidField("PIB"))
+                    {
+                        return Json(new { success = false, prop = "" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (!ModelState.IsValidField("BZR"))
+                    {
+                        return Json(new { success = false, prop = "bzr" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { success = false, prop = "pib" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
                 var newShop = new Shop
                 {
                     Id = shopFormVM.Id,
@@ -89,7 +131,7 @@ namespace FurnitureStore.Controllers
                     Email = shopFormVM.Email,
                     WebPageURL = shopFormVM.WebPageURL,
                     BZR = shopFormVM.BZR,
-                    PIB = shopFormVM.PIB
+                    PIB = (int)shopFormVM.PIB
                 };
 
                 _context.Shops.Add(newShop);
@@ -99,12 +141,12 @@ namespace FurnitureStore.Controllers
                     Id = shopFormVM.Id,
                     StreetName = shopFormVM.Address.StreetName,
                     StreetNumber = shopFormVM.Address.StreetNumber,
-                    ZipCode = shopFormVM.Address.ZipCode,
+                    ZipCode = (int)shopFormVM.Address.ZipCode,
                     City = shopFormVM.Address.City,
                     ShopId = shopFormVM.Id
                 };
 
-                _context.StreetAddresses.Add(newAddress);
+                _context.Addresses.Add(newAddress);
 
                 _context.SaveChanges();
 
@@ -120,13 +162,13 @@ namespace FurnitureStore.Controllers
                 shopDb.Email = shopFormVM.Email;
                 shopDb.WebPageURL = shopFormVM.WebPageURL;
                 shopDb.BZR = shopFormVM.BZR;
-                shopDb.PIB = shopFormVM.PIB;
+                shopDb.PIB = (int)shopFormVM.PIB;
 
-                var addressDb = _context.StreetAddresses.SingleOrDefault(x => x.ShopId == shopDb.Id);
+                var addressDb = _context.Addresses.SingleOrDefault(x => x.ShopId == shopDb.Id);
 
                 addressDb.StreetName = shopFormVM.Address.StreetName;
                 addressDb.StreetNumber = shopFormVM.Address.StreetNumber;
-                addressDb.ZipCode = shopFormVM.Address.ZipCode;
+                addressDb.ZipCode = (int)shopFormVM.Address.ZipCode;
                 addressDb.City = shopFormVM.Address.City;
                 addressDb.ShopId = shopFormVM.Id;
 
@@ -135,6 +177,12 @@ namespace FurnitureStore.Controllers
                 return Json(new { success = true, message = "Uspešno izmenjeno" }, JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        // POST: /Shops/Delete/1
+        #region Metoda za brisanje salona namestaja
+
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             var shopDb = _context.Shops.FirstOrDefault(x => x.Id == id);
@@ -144,5 +192,6 @@ namespace FurnitureStore.Controllers
 
             return Json(new { success = true, message = "Uspešno obrisano" }, JsonRequestBehavior.AllowGet);
         }
+        #endregion
     }
 }

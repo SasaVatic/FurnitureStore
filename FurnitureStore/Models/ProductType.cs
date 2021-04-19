@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using FurnitureStore.CustomValidation;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace FurnitureStore.Models
 {
@@ -17,16 +20,17 @@ namespace FurnitureStore.Models
         /// <summary>
         /// Naziv tipa proizvoda
         /// </summary>
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(50, ErrorMessage = "Maksimalna dužina opisa je 500 karaktera")]
         [Display(Name = "Naziv")]
+        [Index(IsUnique = true)]
         public string TypeName { get; set; }
 
         /// <summary>
         /// Opis tipa proizvoda
         /// </summary>
-        [Required]
-        [StringLength(500)]
+        [Required(ErrorMessage = "Polje je obavezno")]
+        [StringLength(500, ErrorMessage = "Maksimalna dužina opisa je 500 karaktera")]
         [Display(Name = "Opis")]
         public string Description { get; set; }
         #endregion

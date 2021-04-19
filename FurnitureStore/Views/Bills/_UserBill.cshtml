@@ -1,0 +1,65 @@
+﻿@model FurnitureStore.ViewModels.UserBillViewModel
+
+@{ 
+    Layout = null;
+}
+
+<div class="p-3">
+    <hr />
+    <h4 class="bg-dark text-center py-2 page-title text-light">Račun</h4>
+    <hr />
+    <div class="py-2">
+        <h5 class="font-weight-bold">
+            Datum kupovine:
+            <span class="font-weight-light">@Model.PurchaseDate.ToString("dd/MM/yyyy")</span>
+        </h5>
+    </div>
+    <div>
+        <h5 class="font-weight-bold">
+            Saloni u kojima je obavljena kupovina:
+            @foreach (var product in Model.PurchasedProducts)
+            {
+                <span class="font-weight-light">| @product.ShopName</span>
+            }
+        </h5>
+    </div>
+    <div class="container p-0">
+        <hr />
+        <h4 class="text-center py-2">Proizvodi</h4>
+        <hr />
+        <div class="row">
+            @foreach (var product in Model.PurchasedProducts)
+            {
+                <div class="col-6">
+                    <h5 class="font-weight-bold">
+                        Naziv:
+                        <span class="font-weight-light">@product.ProductName</span>
+                    </h5>
+                    <h5 class="font-weight-bold">
+                        Količina:
+                        <span class="font-weight-light">@product.Quantity</span>
+                    </h5>
+                    <h5 class="font-weight-bold">
+                        Jedinična cena:
+                        <span class="font-weight-light">@product.UnitPrice DIN</span>
+                    </h5>
+                </div>
+            }
+        </div>
+    </div>
+    <hr />
+    <div>
+        <h5 class="font-weight-bold">
+            Porez:
+            <span class="font-weight-light">@Model.Tax %</span>
+        </h5>
+    </div>
+    <div>
+        <h5 class="font-weight-bold mb-0">
+            Ukupna cena sa porezom:
+            <span class="font-weight-light">@Model.TotalPrice DIN</span>
+        </h5>
+    </div>
+    <hr />
+    <button class="btn btn-primary m-3" onclick="closeBillWindow()">Zatvori</button>
+</div>

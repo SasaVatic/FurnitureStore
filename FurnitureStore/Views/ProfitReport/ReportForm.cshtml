@@ -1,0 +1,28 @@
+﻿@model FurnitureStore.ViewModels.ProfitReportViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("GetReport", "ProfitReport", FormMethod.Get, new { onsubmit = "return submitForm(this)" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductTypeName, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.ProductTypeName, new SelectList(Model.ProductTypes, "TypeName", "TypeName"), "Kategorija nameštaja", htmlAttributes: new { @class = "form-control drop-down", @id = "productTypeId", autocomplete = "off" })
+        @Html.ValidationMessageFor(model => model.ProductTypeName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate, new { @class = "control-label" })
+        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date-picker", autocomplete = "off", placeholder = "Od datuma", onkeydown = "return false", onpaste = "return false" } })
+        @Html.ValidationMessageFor(model => model.StartDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate, new { @class = "control-label" })
+        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control date-picker", autocomplete = "off", placeholder = "Do datuma", onkeydown = "return false", onpaste = "return false" } })
+        @Html.ValidationMessageFor(model => model.EndDate)
+    </div>
+    <hr />
+    <div class="form-group d-flex justify-content-around mt-4">
+        <input type="submit" class="btn btn-success" value="Generiši" />
+        <input type="reset" class="btn btn-outline-secondary" value="Poništi" />
+    </div>
+}

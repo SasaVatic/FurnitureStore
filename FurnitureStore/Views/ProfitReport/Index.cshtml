@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Izveštaj";
+}
+
+<!--#region HTML za stranicu izveštaj-->
+<div class="container-fluid px-5 min-vh-100 bg-light position-relative pb-3" style="border:1px solid #000">
+    @Html.Partial("_SideNavbar")
+    <hr />
+    <h2 class="text-center page-title text-light bg-dark py-2">- Izveštaj -</h2>
+    <hr />
+    <div class="row">
+        <div class="col">
+            @Html.Partial("_ModalAddOrEdit")
+            <!--#region Tabela za izveštaj-->
+            <button type="button" class="btn btn-success my-3 d-block ml-auto" data-toggle="modal" data-target="#modalAddOrEdit" onclick="popupForm('@Url.Action("GenerateReport", "ProfitReport")')"><i class="far fa-file-alt"></i> Generiši izveštaj</button>
+
+            <table id="reportTable" class="table display nowarp w-100">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Naziv salona</th>
+                        <th>Naziv kategorije</th>
+                        <th>Od</th>
+                        <th>Do</th>
+                        <th>Broj komada prodatog nameštaja</th>
+                        <th>Ukupna zarada za dati period</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <h4 class="text-primary font-weight-bolder my-4">Ukupna zarada za kategoriju: <span id="totalEarnings" class="font-weight-light"></span></h4>
+            <!--#endregion-->
+        </div>
+    </div>
+    <hr />
+</div>
+<!--#endregion-->
+<!--#region CSS linkovi za DataTable-->
+@Styles.Render("~/Content/themes/base/jquery-ui.min.css")
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+<!--#endregion-->
+
+@section scripts
+{
+    <!--#region Skripte za validaciju, DataTable i notifikacije-->
+    @Scripts.Render("~/bundles/jqueryval");
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js");
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!--#region Glavna skripta-->
+
+    <script>
+        let table;
+        $(document).ready(function () {
+            //$.validator.methods.date = function (value, element) {
+            //    return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
+            //}
+            table = $("#reportTable").DataTable({
+                language: {
+                    emptyTable: "<div style='font-weight: 500;'>Prikaz izveštaja</div>"
+                },
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true,
+                searching: false,
+                paging: false,
+                info: false,
+                bSort: false
+            });
+        });
+
+        //#region Metoda za dobavljanje i prikaz ReportForm view-a u body delu modala _ModalAddOrEdit
+
+        function popupForm(url) {
+            let formDiv = $(".modal-body");
+            $.get(url)
+                .done(function (response) {
+                    formDiv.html(response);
+
+                    $("form").trigger("reset"); // resetuj formu da bi datepicker radio posle prvog otvaranja modala
+
+                    itializeDatepicker();
+                });
+        }
+        //#endregion
+
+        //#region DatePicker inicijalizacija
+
+        function itializeDatepicker() {
+            $(".date-picker").datepicker({
+                //dateFormat: 'dd/mm/yy',
+                maxDate: '0'
+            });
+        }
+
+        //#endregion
+
+        //#region Metoda za validaciju i slanje popunjene forme preko ajax post zahteva
+
+        function submitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type: "GET",
+                    url: form.action,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+
+                            table.destroy();
+
+                            let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(response.data[0]["TotalProfitCategory"]);
+                            $("#totalEarnings").text(price);
+
+                            $("#modalAddOrEdit").modal("hide");
+
+                            table = $("#reportTable").DataTable({
+                                data: response.data,
+                                columns: [
+                                    { data: "ShopName", className: "dt-center" },
+                                    { data: "ProductName", className: "dt-center table-primary" },
+                                    {
+                                        data: "StartDate",
+                                        className: "dt-center",
+                                        render: function (data) {
+                                            return moment(data).format("DD/MM/YYYY");
+                                        }
+                                    },
+                                    {
+                                        data: "EndDate",
+                                        className: "dt-center table-primary",
+                                        render: function (data) {
+                                            return moment(data).format("DD/MM/YYYY");
+                                        }
+                                    },
+                                    { data: "ProductSum", className: "dt-center" },
+                                    {
+                                        data: "ProfitSum",
+                                        className: "dt-center table-primary",
+                                        render: function (data) {
+                                            var price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data);
+                                            return price;
+                                        }
+                                    },
+                                ],
+                                language: {
+                                    emptyTable: "<div style='font-weight: 500;'>Prikaz</div>"
+                                },
+                                rowReorder: {
+                                    selector: 'td:nth-child(2)'
+                                },
+                                responsive: true,
+                                searching: false,
+                                paging: false,
+                                info: false,
+                                bSort: false
+                            })
+                        }
+                        else {
+                            $("#modalAddOrEdit").modal("hide");
+
+                            $.notify(response.message, {
+                                globalPosition: "top center",
+                                className: "warn"
+                            });
+                        }
+                    }
+                })
+            }
+            return false;
+        }
+        //#endregion
+    </script>
+    <!--#endregion-->
+}
+

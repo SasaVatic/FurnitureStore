@@ -2,52 +2,32 @@
     ViewBag.Title = "Nameštaj";
 }
 
-<div class="container-fluid px-5 min-vh-100 bg-light position-relative">
+<!--#region HTML za stranicu komada namestaja-->
+
+<div class="container-fluid px-5 min-vh-100 bg-light position-relative pb-3">
     @Html.Partial("_SideNavbar")
-    <h2 class="text-center page-title text-primary">Nameštaj</h2>
+    <hr />
+    <h2 class="text-center page-title text-light bg-dark py-2">- Nameštaj -</h2>
+    <hr />
     <div class="row">
+
         <div class="col">
 
-            <div class="modal fade" id="modalDelete">
-                <div class="modal-dialog">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Obriši</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Da li ste sigurni da želite da obrišete komad nameštaja?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="confirmDelete()">Obriši</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("_ModalDelete")
 
+            @Html.Partial("_ModalAddOrEdit")
 
-            <div class="modal fade" id="modalWindow" role="dialog">
-                <div class="modal-dialog modal-dialog-scrollable">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="mTitle">Dodaj nameštaj</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body"></div>
-                        <div class="modal-footer"></div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("_ModalPopupImage")
 
-            <button type="button" class="btn btn-success my-3" data-toggle="modal" data-target="#modalWindow" onclick="popupForm('@Url.Action("AddOrEdit", "Products")')"><i class="fa fa-plus"></i> Dodaj nameštaj</button>
+            <!--#region Tabela za komade namestaja -->
 
-            <table id="productsTable" class="table table-bordered table-striped display nowarp w-100">
-                <thead>
+            <button type="button" class="btn btn-success my-3 ml-auto d-block" data-toggle="modal"
+                data-target="#modalAddOrEdit" onclick="popupForm('@Url.Action("AddOrEdit", "Products")')">
+                <i class="fa fa-plus"></i> Dodaj nameštaj
+            </button>
+
+            <table id="productsTable" class="table display nowarp w-100">
+                <thead class="thead-dark">
                     <tr>
                         <th>Šifra</th>
                         <th>Naziv</th>
@@ -58,28 +38,59 @@
                         <th>Prodajni salon</th>
                         <th>Tip</th>
                         <th>Slika</th>
-                        <th></th>
+                        <th>Akcije</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
+            <!--#endregion -->
+
         </div>
     </div>
+    <hr />
 </div>
+<!--#endregion -->
 
+<!--#region CSS linkovi za DataTable  -->
+@Styles.Render("~/Content/ImagePopup.css")
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+<!--#endregion -->
+
 
 @section scripts
 {
+    <!--#region Skripte za validaciju, DataTable i notifikacije  -->
     @Scripts.Render("~/bundles/jqueryval");
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/customValidation/customValidation.js"></script>
+    <!--#endregion -->
+
+    <!--#region Glavna skripta  -->
+
     <script>
         let table;
         $(document).ready(function () {
+
+            //#region Dobavljanje podataka i popuna tabele za komade namestaja
+
             table = $("#productsTable").DataTable({
                 ajax: {
                     url: "/Products/GetProducts",
@@ -88,29 +99,36 @@
                 },
                 columns: [
                     { data: "ProductKey", className: "dt-center" },
-                    { data: "ProductName", className: "dt-center" },
+                    { data: "ProductName", className: "dt-center table-primary" },
                     { data: "MadeIn", className: "dt-center" },
-                    { data: "ProductionYear", className: "dt-center" },
-                    { data: "Price", className: "dt-center" },
-                    { data: "Quantity", className: "dt-center" },
+                    { data: "ProductionYear", className: "dt-center table-primary" },
+                    {
+                        data: "Price",
+                        className: "dt-center",
+                        render: function (data) {
+                            let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data);
+                            return price;
+                        }
+                    },
+                    { data: "Quantity", className: "dt-center table-primary" },
                     { data: "ShopName", className: "dt-center" },
-                    { data: "ProductTypeName", className: "dt-center" },
+                    { data: "ProductTypeName", className: "dt-center table-primary" },
                     {
                         data: "Image",
                         className: "dt-center",
                         render: function (data) {
-                            return "<img src='"+data+"' id='productImage' width='200px' height='200px' />";
+                            return "<img src='"+data+"' width='100px' height='100px' onclick=popupImage(this) style='cursor:pointer'/>";
                         },
                         orderable: false,
                         searchable: false,
                     },
                     {
                         data: "Id",
-                        className: "dt-center",
+                        className: "dt-center table-primary",
                         render: function (data) {
-                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalWindow'"
+                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalAddOrEdit'"
                                 + " onclick=popupForm('@Url.Action("AddOrEdit", "Products")/" + data + "')><i class='fas fa-pencil-alt'></i> Izmeni</button>"
-                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' data-user-id=" + data + "><i class='fa fa-trash'></i> Obriši</button> ";
+                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' onclick=confirmDelete("+data+")><i class='fa fa-trash'></i> Obriši</button> ";
                         },
                         orderable: false,
                         searchable: false,
@@ -118,23 +136,90 @@
                     }
                 ],
                 language: {
-                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj nameštaj</b></div>"
+                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj nameštaj</b></div>",
+                    "info": "Od _START_ do _END_ ukupno _TOTAL_",
+                    "infoEmpty": "Od 0 do 0 ukupno 0",
+                    "zeroRecords": "Traženi pojam ne postoji"
+                },
+                lengthMenu: [[3, 6, 9, -1], [3, 6, 9]],
+                oLanguage: {
+                    "oPaginate": {
+                        "sNext": "Sledeća",
+                        "sPrevious": "Prethodna"
+                    },
+                    "sProcessing": "Tabela je trenutno zauzeta",
+                    "sLoadingRecords": "Učitavanje...",
+                    "sLengthMenu": 'Prikaži <select>' +
+                        '<option value="3">3</option>' +
+                        '<option value="6">6</option>' +
+                        '<option value="9">9</option>' +
+                        '</select> proizvoda',
+                    "sZeroRecords": "Nema traženih rezultata u pretrazi"
                 },
                 rowReorder: {
                     selector: 'td:nth-child(2)'
                 },
-                responsive: true
+                responsive: true,
+                initComplete: function () {
+                    // Apply the search
+                    this.api().columns().every(function () {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "dom": '<"top"l>rt<"bottom"ip><"clear">'
             });
+
+            $('#productsTable tfoot th').each(function (index) {
+                if (index == 1 || index == 2 || index == 3
+                    || index == 4) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Pretraga" />');
+                }
+            });
+            //#endregion
+
+            //#region Izmena teksta u _ModalDelete modalu za potvrdu brisanja komada namestaja
+
+            $("#modalDelete").on("shown.bs.modal", function () {
+                $("#deleteTextContent").text("Da li ste sigurni da želite da obrišete komad nameštaja?");
+            });
+            //#endregion
         });
+
+        //#region Metoda za dobavljanje i prikaz ProductForm view-a u body delu modala _ModalAddOrEdit
+
         function popupForm(url) {
-            let formDiv = $("#modalWindow .modal-body");
+            let formDiv = $("#modalAddOrEdit .modal-body");
             $.get(url)
                 .done(function (response) {
                     let productId = $("#Id", response).val();
                     $("#mTitle").text((productId == 0) ? "Dodaj nameštaj" : "Izmeni nameštaj");
                     formDiv.html(response);
+
+                    if (productId != 0) {
+                        $("#productKey").attr("readonly", "readonly");
+                    }
                 });
         }
+
+        //#endregion
+
+        //#region Metoda za rest forme
+        function resetForm() {
+            $("form").trigger("reset");
+        }
+        //#endregion
+
+        //#region Metoda za validaciju i slanje popunjene forme preko ajax post zahteva
+
         function submitForm(form) {
             $.validator.unobtrusive.parse(form);
             if ($(form).valid()) {
@@ -150,7 +235,7 @@
                     success: function (data) {
                         if (data.success) {
 
-                            $("#modalWindow").modal("hide");
+                            $("#modalAddOrEdit").modal("hide");
                             table.ajax.reload();
 
                             $.notify(data.message, {
@@ -158,11 +243,34 @@
                                 className: "success"
                             });
                         }
+                        else if (data.isKeyNonValid) {
+                            $("#productKeyGroup .field-validation-valid").text("Proizvod sa istom šifrom već postoji");
+                            $("#productKeyGroup .field-validation-valid").css({ "color": "red" });
+                            $("#productKey").toggleClass("input-validation-error");
+                        }
+                        else if (data.isYearNonValid) {
+                            $("#yearGroup .field-validation-valid").text("Polje je obavezno");
+                            $("#yearGroup .field-validation-valid").css({ "color": "red" });
+                            $("#productionYear").toggleClass("input-validation-error");
+                        }
+                        else {
+                            $("#productKeyGroup .field-validation-valid").text("Proizvod sa istom šifrom već postoji");
+                            $("#productKeyGroup .field-validation-valid").css({ "color": "red" });
+                            $("#productKey").toggleClass("input-validation-error");
+
+                            $("#yearGroup .field-validation-valid").text("Polje je obavezno");
+                            $("#yearGroup .field-validation-valid").css({ "color": "red" });
+                            $("#productionYear").toggleClass("input-validation-error");
+                        }
                     }
                 });
             }
             return false;
         }
+        //#endregion
+
+        //#region Metoda za prikaz izabrane slike namestaja u modalnom prozoru
+
         function loadImage(input) {
             if (input.files && input.files[0]) {
                 let reader = new FileReader();
@@ -173,8 +281,21 @@
                 $("#targetImage").show();
             }
         }
-        function confirmDelete() {
-            let id = $(".btn-delete").attr("data-user-id");
+        //#endregion
+
+        //#region Metoda za potvrdu brisanja komada namestaja preko ajax post zahteva
+
+        // na klik obrisi dugmeta na tabeli podesi atrribut data-item-id
+        // na dugmetu modala na id koji je uzeo sa dugmeta tabele
+        function confirmDelete(id) {
+            $("#btn-confirm").attr("data-item-id", id);
+        }
+
+        // kada korisnik klikne na obrisi dugme na modalu
+        // pokupi vrednost data-item-id od tog dugmeta 
+        // i prosledi ga na url za ajax zahtev
+        function executeDelete(btn) {
+            let id = $(btn).attr("data-item-id");
             $.ajax({
                 url: "/Products/Delete/" + id,
                 method: "POST",
@@ -189,6 +310,22 @@
                 }
             });
         }
+        //#endregion
+
+        function popupImage(image) {
+            let modal = $("#imageModal");
+            let modalImg = $("#img-product");
+
+            modal[0].style.display = "block";
+            modalImg[0].src = $(image)[0].src;
+
+            let span = $("#close-img");
+
+            span.click(function () {
+                modal[0].style.display = "none";
+            });
+        }
     </script>
+    <!--#endregion -->
 }
 

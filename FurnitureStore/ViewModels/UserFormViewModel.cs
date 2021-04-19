@@ -7,19 +7,23 @@ namespace FurnitureStore.ViewModels
     public class UserFormViewModel
     {
         #region Properties
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(50)]
         [Display(Name = "Korisničko ime")]
         public string Username { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        [Display(Name = "Lozinka")]
+        [Required(ErrorMessage = "Lozinka je obavezna")]
+        [StringLength(100, ErrorMessage = "{0} mora biti dužine bar {2} karaktera.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$")]
+        [Display(Name = "Lozinka")]
         public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Potvrdi lozinku")]
+        [Compare("Password", ErrorMessage = "Lozinka i potvrda lozinke se ne slažu.")]
+        public string ConfirmPassword { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -31,14 +35,15 @@ namespace FurnitureStore.ViewModels
         [Display(Name = "Prezime")]
         public string Surname { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email je obavezan")]
         [StringLength(255)]
         [EmailAddress]
         [Display(Name = "E-mail")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Uloga je obavezna")]
         [Display(Name = "Uloga")]
-        public byte UserRoleId { get; set; }
+        public string UserRoleId { get; set; }
 
         public IEnumerable<UserRoleViewModel> UserRoles { get; set; }
 
@@ -51,12 +56,10 @@ namespace FurnitureStore.ViewModels
         public UserFormViewModel(User user)
         {
             Id = user.Id;
-            Username = user.Username;
-            Password = user.Password;
+            Username = user.UserName;
             Name = user.Name;
             Surname = user.Surname;
             Email = user.Email;
-            UserRoleId = user.UserRoleId;
         }
         #endregion
     }

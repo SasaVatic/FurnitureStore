@@ -24,7 +24,7 @@ namespace FurnitureStore
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-sandstone.css",
-                      "~/Content/Site.css"));
+                      "~/Content/Main.css"));
         }
     }
 }

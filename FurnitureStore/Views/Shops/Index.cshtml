@@ -2,52 +2,24 @@
     ViewBag.Title = "Saloni";
 }
 
-<div class="container-fluid px-5 min-vh-100 bg-light position-relative">
+<!--#region HTML za stranicu saloni namestaja-->
+<div class="container-fluid px-5 min-vh-100 bg-light position-relative pb-3">
     @Html.Partial("_SideNavbar")
-    <h2 class="text-center page-title text-primary">Saloni</h2>
+    <hr />
+    <h2 class="text-center page-title text-light bg-dark py-2">- Saloni -</h2>
+    <hr />
     <div class="row">
         <div class="col">
 
-            <div class="modal fade" id="modalDelete">
-                <div class="modal-dialog">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Obriši</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Da li ste sigurni da želite da obrišete salon?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="confirmDelete()">Obriši</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("_ModalDelete")
 
+            @Html.Partial("_ModalAddOrEdit")
 
-            <div class="modal fade" id="modalWindow" role="dialog">
-                <div class="modal-dialog modal-dialog-scrollable">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="mTitle">Dodaj salon</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body"></div>
-                        <div class="modal-footer"></div>
-                    </div>
-                </div>
-            </div>
+            <!--#region Tabela za salone namestaja-->
+            <button type="button" class="btn btn-success my-3 d-block ml-auto" data-toggle="modal" data-target="#modalAddOrEdit" onclick="popupForm('@Url.Action("AddOrEdit", "Shops")')"><i class="fa fa-plus"></i> Dodaj salon</button>
 
-            <button type="button" class="btn btn-success my-3" data-toggle="modal" data-target="#modalWindow" onclick="popupForm('@Url.Action("AddOrEdit", "Shops")')"><i class="fa fa-plus"></i> Dodaj salon</button>
-
-            <table id="shopsTable" class="table table-bordered table-striped display nowarp w-100">
-                <thead>
+            <table id="shopsTable" class="table display nowarp w-100">
+                <thead class="thead-dark">
                     <tr>
                         <th>Naziv salona</th>
                         <th>Vlasnik</th>
@@ -57,28 +29,52 @@
                         <th>Web stranica</th>
                         <th>Poreski identifikacioni broj</th>
                         <th>Broj žiro računa</th>
-                        <th></th>
+                        <th>Akcije</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
+            <!--#endregion-->
         </div>
     </div>
+    <hr />
 </div>
-
+<!--#endregion-->
+<!--#region CSS linkovi za DataTable-->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+<!--#endregion-->
 
 @section scripts
 {
+    <!--#region Skripte za validaciju, DataTable i notifikacije -->
     @Scripts.Render("~/bundles/jqueryval");
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <!--#endregion-->
+    <!--#region Glavna skripta-->
+
     <script>
         let table;
         $(document).ready(function () {
+
+            //#region Dobavljanje podataka i popuna tabele za salone namestaja
+
             table = $("#shopsTable").DataTable({
                 ajax: {
                     url: "/Shops/GetShops",
@@ -87,26 +83,26 @@
                 },
                 columns: [
                     { data: "ShopName", className: "dt-center" },
-                    { data: "OwnerName", className: "dt-center" },
+                    { data: "OwnerName", className: "dt-center table-primary" },
                     { data: "Address", className: "dt-center" },
-                    { data: "PhoneNumber", className: "dt-center" },
+                    { data: "PhoneNumber", className: "dt-center table-primary" },
                     { data: "Email", className: "dt-center" },
                     {
                         data: "WebPageURL",
-                        className: "dt-center",
+                        className: "dt-center table-primary",
                         render: function (data) {
-                            return "<a href='" + data + "' target='_blank'>" + data + "</a>";
+                            return "<a href='" + data + "' target='_blank' class='text-info'>" + data + "</a>";
                         }
                     },
                     { data: "PIB", className: "dt-center" },
-                    { data: "BZR", className: "dt-center" },
+                    { data: "BZR", className: "dt-center table-primary" },
                     {
                         data: "Id",
                         className: "dt-center",
                         render: function (data) {
-                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalWindow'"
+                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalAddOrEdit'"
                                 + " onclick=popupForm('@Url.Action("AddOrEdit", "Shops")/" + data + "')><i class='fas fa-pencil-alt'></i> Izmeni</button>"
-                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' data-user-id=" + data + "><i class='fa fa-trash'></i> Obriši</button> ";
+                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' onclick=confirmDelete("+data+")><i class='fa fa-trash'></i> Obriši</button> ";
                         },
                         orderable: false,
                         searchable: false,
@@ -114,23 +110,84 @@
                     }
                 ],
                 language: {
-                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj salon</b></div>"
+                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj salon</b></div>",
+                    "info": "Od _START_ do _END_ ukupno _TOTAL_",
+                    "infoEmpty": "Od 0 do 0 ukupno 0",
+                    "zeroRecords": "Traženi pojam ne postoji"
                 },
                 rowReorder: {
                     selector: 'td:nth-child(2)'
                 },
-                responsive: true
+                lengthMenu: [[3, 6, 9, -1], [3, 6, 9]],
+                oLanguage: {
+                    "oPaginate": {
+                        "sNext": "Sledeća",
+                        "sPrevious": "Prethodna"
+                    },
+                    "sProcessing": "Tabela je trenutno zauzeta",
+                    "sLoadingRecords": "Učitavanje...",
+                    "sLengthMenu": 'Prikaži <select>' +
+                        '<option value="3">3</option>' +
+                        '<option value="6">6</option>' +
+                        '<option value="9">9</option>' +
+                        '</select> salona',
+                    "sZeroRecords": "Nema traženih rezultata u pretrazi"
+                },
+                responsive: true,
+                initComplete: function () {
+                    // Apply the search
+                    this.api().columns().every(function () {
+                        var that = this;
+
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    });
+                },
+                "dom": '<"top"l>rt<"bottom"ip><"clear">'
             });
+
+            $('#shopsTable tfoot th').each(function (index) {
+                if (index == 0 || index == 1 || index == 2
+                    || index == 3 || index == 6 || index == 7) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Pretraga" />');
+                }
+            });
+            //#endregion
+
+            //#region Izmena teksta u _ModalDelete modalu za potvrdu brisanja komada namestaja
+
+            $("#modalDelete").on("shown.bs.modal", function () {
+                $("#deleteTextContent").text("Da li ste sigurni da želite da obrišete salon?");
+            });
+            //#endregion
         });
+
+        //#region Metoda za dobavljanje i prikaz ShopForm view-a u body delu modala _ModalAddOrEdit
+
         function popupForm(url) {
-            let formDiv = $("#modalWindow .modal-body");
+            let formDiv = $("#modalAddOrEdit .modal-body");
             $.get(url)
                 .done(function (response) {
                     let shopId = $("#Id", response).val();
                     $("#mTitle").text((shopId == 0) ? "Dodaj salon" : "Izmeni salon");
                     formDiv.html(response);
+
+                    if (shopId != 0) {
+                        $("#pib").attr("readonly", "readonly");
+                        $("#bzr").attr("readonly", "readonly");
+                    }
                 });
         }
+        //#endregion
+
+        //#region Metoda za validaciju i slanje popunjene forme preko ajax post zahteva
+
         function submitForm(form) {
             $.validator.unobtrusive.parse(form);
             if ($(form).valid()) {
@@ -141,7 +198,7 @@
                     success: function (data) {
                         if (data.success) {
 
-                            $("#modalWindow").modal("hide");
+                            $("#modalAddOrEdit").modal("hide");
                             table.ajax.reload();
 
                             $.notify(data.message, {
@@ -149,13 +206,49 @@
                                 className: "success"
                             });
                         }
+                        else {
+                            // Posto ModelState u kontroleru nije bio validan u zavisnosti od odgovora koji smo dobili
+                            // obavesti korisnika da nije uneo validna unique polja jer vec postoje u bazi
+                            if (data.prop == "bzr") {
+                                $("#bzrGroup .field-validation-valid").text("Salon sa istim brojem žiro računa već postoji");
+                                $("#bzrGroup .field-validation-valid").css({ "color": "red" });
+                                $("#bzr").toggleClass("input-validation-error");
+                            }
+                            else if (data.prop == "pib") {
+                                $("#pibGroup .field-validation-valid").text("Salon sa istim poreskim brojem već postoji");
+                                $("#pibGroup .field-validation-valid").css({ "color": "red" });
+                                $("#pib").toggleClass("input-validation-error");
+                            }
+                            else {
+                                $("#bzrGroup .field-validation-valid").text("Salon sa istim brojem žiro računa već postoji");
+                                $("#bzrGroup .field-validation-valid").css({ "color": "red" });
+                                $("#bzr").toggleClass("input-validation-error");
+
+                                $("#pibGroup .field-validation-valid").text("Salon sa istim poreskim brojem već postoji");
+                                $("#pibGroup .field-validation-valid").css({ "color": "red" });
+                                $("#pib").toggleClass("input-validation-error");
+                            }
+                        }
                     }
                 })
             }
             return false;
         }
-        function confirmDelete() {
-            let id = $(".btn-delete").attr("data-user-id");
+        //#endregion
+
+        //#region Metoda za potvrdu brisanja salona namestaja preko ajax post zahteva
+
+        // na klik obrisi dugmeta na tabeli podesi atrribut data-item-id
+        // na dugmetu modala na id koji je uzeo sa dugmeta tabele
+        function confirmDelete(id) {
+            $("#btn-confirm").attr("data-item-id", id); 
+        }
+
+        // kada korisnik klikne na obrisi dugme na modalu
+        // pokupi vrednost data-item-id od tog dugmeta 
+        // i prosledi ga na url za ajax zahtev
+        function executeDelete(btn) {
+            let id = $(btn).attr("data-item-id");
             $.ajax({
                 url: "/Shops/Delete/" + id,
                 method: "POST",
@@ -170,6 +263,8 @@
                 }
             });
         }
+        //#endregion
     </script>
+    <!--#endregion-->
 }
 
