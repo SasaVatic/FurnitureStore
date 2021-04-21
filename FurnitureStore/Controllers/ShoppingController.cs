@@ -92,7 +92,8 @@ namespace FurnitureStore.Controllers
                         cartProduct.Quantity += 1;
                         cartProduct.TotalPrice = cartProduct.Quantity * cartProduct.UnitPrice;
 
-                        cart.BillTotalPrice += cartProduct.UnitPrice;
+                        cart.BillTotalPriceWithOutTax += cartProduct.UnitPrice;
+                        cart.BillTotalPriceWithTax = ((ConstantValues.Tax / 100) * cart.BillTotalPriceWithOutTax) + cart.BillTotalPriceWithOutTax;
                     }
                     // u suprotnom vrati poruku da nema na stanju
                     else
@@ -113,16 +114,8 @@ namespace FurnitureStore.Controllers
 
                     cart.CartProducts.Add(cartProduct);
 
-                    // Ako vec ima proizvoda u korpi dodaj na ukupnu cenu
-                    if (cart.BillTotalPrice != 0)
-                    {
-                        cart.BillTotalPrice += productDb.Price;
-                    }
-                    // u suprotnom inicijalizuj
-                    else
-                    {
-                        cart.BillTotalPrice = productDb.Price;
-                    }
+                    cart.BillTotalPriceWithOutTax += cartProduct.UnitPrice;
+                    cart.BillTotalPriceWithTax = ((ConstantValues.Tax / 100) * cart.BillTotalPriceWithOutTax) + cart.BillTotalPriceWithOutTax;
                 }
             }
             // Ako proizvoda nema na stanju a korisnik hoce da ga dodao u korpu vrati mu poruku
@@ -137,9 +130,14 @@ namespace FurnitureStore.Controllers
             // Session CartProducts koristimo da bi sacuvali sve proizvode koje je kupac dodao u korpu
             Session["CartProducts"] = cart;
 
-            var billTotalPrice = cart.BillTotalPrice;
-
-            return Json(new { success = true, message = "Dodato u korpu", counter = cart.CartProducts.Count, total = billTotalPrice }, JsonRequestBehavior.AllowGet);
+            return Json(new 
+            { 
+                success = true, 
+                message = "Dodato u korpu", 
+                counter = cart.CartProducts.Count, 
+                total = cart.BillTotalPriceWithOutTax,
+                totalTax = cart.BillTotalPriceWithTax
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Shopping/RemoveFromCart/1
@@ -151,35 +149,33 @@ namespace FurnitureStore.Controllers
             // Ako korpa nije null
             if (cart.CartProducts != null)
             {
-                // Ukupna cena za racun
-                var billTotalPrice = cart.BillTotalPrice;
-
-                // Uzmi korpu
+                // Uzmi proizvode u korpi
                 var cartProducts = cart.CartProducts;
-                // Proveri da li ima nesto u nnjoj
+
+                // Proveri da li ima nesto u njoj
                 if (cartProducts.Any())
                 {
                     // Pronadji proizvod sa prosledjenim id-jem
-                    var product = cartProducts.FirstOrDefault(x => x.ProductId == id);
+                    var cartProduct = cartProducts.FirstOrDefault(x => x.ProductId == id);
                     // Ako nisi nasao vrati odgovarajuci response
-                    if (product == null)
+                    if (cartProduct == null)
                     {
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
 
                     // Skini za jedan sa racuna i koriguj cene u odnosu na to
-                    product.Quantity--;
-                    product.TotalPrice -= product.UnitPrice;
+                    cartProduct.Quantity--;
+                    cartProduct.TotalPrice -= cartProduct.UnitPrice;
 
                     // Oduzmi od ukupnog za racun
-                    billTotalPrice -= product.UnitPrice;
-                    cart.BillTotalPrice = billTotalPrice;
+                    cart.BillTotalPriceWithOutTax -= cartProduct.UnitPrice;
+                    cart.BillTotalPriceWithTax = ((ConstantValues.Tax / 100) * cart.BillTotalPriceWithOutTax) + cart.BillTotalPriceWithOutTax;
 
                     // Ako je kolicina posle oduzimanja jednaka nula
-                    if (product.Quantity == 0)
+                    if (cartProduct.Quantity == 0)
                     {
                         // Ukloni proizvod iz korpe
-                        cartProducts.Remove(product);
+                        cartProducts.Remove(cartProduct);
 
                         // Ako je posle uklanjanja proizvoda korpa prazna
                         // vrati success false na osnovu kog ce view da refreshuje stranicu 
@@ -187,9 +183,14 @@ namespace FurnitureStore.Controllers
                         {
                             // Osvezi Session
                             Session["CartCounter"] = 0;
-                            Session["CartProducts"] = cart;
+                            Session["CartProducts"] = new ShoppingCartViewModel();
 
-                            return Json(new { success = false, counter = 0, total = "" }, JsonRequestBehavior.AllowGet);
+                            return Json(new 
+                            { 
+                                success = false, 
+                                counter = 0, 
+                                total = "" 
+                            }, JsonRequestBehavior.AllowGet);
                         }
 
                         // Osvezi Session
@@ -197,18 +198,27 @@ namespace FurnitureStore.Controllers
                         Session["CartCounter"] = cart.CartProducts.Count;
 
                         // u suprotnom osvezi tabelu i ukupnu cenu
-                        return Json(new { success = true, counter = cart.CartProducts.Count, total = billTotalPrice }, JsonRequestBehavior.AllowGet);
+                        return Json(new 
+                        { 
+                            success = true, 
+                            counter = cart.CartProducts.Count, 
+                            total = cart.BillTotalPriceWithOutTax,
+                            totalTax = cart.BillTotalPriceWithTax
+                        }, JsonRequestBehavior.AllowGet);
                     }
-
-                    // Osvezi ukupnu cenu za korpu tj racun
-                    cart.BillTotalPrice = billTotalPrice;
 
                     // Osvezi Session
                     Session["CartProducts"] = cart;
                     Session["CartCounter"] = cart.CartProducts.Count;
 
                     // osvezi tabelu i ukupnu cenu
-                    return Json(new { success = true, counter = cart.CartProducts.Count, total = billTotalPrice }, JsonRequestBehavior.AllowGet);
+                    return Json(new 
+                    { 
+                        success = true, 
+                        counter = cart.CartProducts.Count, 
+                        total = cart.BillTotalPriceWithOutTax,
+                        totalTax = cart.BillTotalPriceWithTax
+                    }, JsonRequestBehavior.AllowGet);
                     
                 }
             }
@@ -229,7 +239,8 @@ namespace FurnitureStore.Controllers
 
             cart.CartProducts.Remove(product);
 
-            cart.BillTotalPrice -= product.TotalPrice;
+            cart.BillTotalPriceWithOutTax -= product.TotalPrice;
+            cart.BillTotalPriceWithTax = ((ConstantValues.Tax / 100) * cart.BillTotalPriceWithOutTax) + cart.BillTotalPriceWithOutTax;
 
             // Osvezi Session
             Session["CartProducts"] = cart;
@@ -243,7 +254,14 @@ namespace FurnitureStore.Controllers
                 Session["CartCounter"] = 0;
             }
 
-            return Json(new { success = true, isEmpty = isCartEmpty, counter = cart.CartProducts.Count, total = cart.BillTotalPrice }, JsonRequestBehavior.AllowGet);
+            return Json(new 
+            { 
+                success = true, 
+                isEmpty = isCartEmpty, 
+                counter = cart.CartProducts.Count, 
+                totalTax = cart.BillTotalPriceWithTax, 
+                total = cart.BillTotalPriceWithOutTax 
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Shopping/Buy
@@ -256,13 +274,13 @@ namespace FurnitureStore.Controllers
             // Ako kupac klikne kupi a korpa nije prazna
             if (cart.CartProducts.Any())
             {
-                decimal total = cart.BillTotalPrice;
+                decimal total = cart.BillTotalPriceWithTax;
 
                 // Napravi racun
                 var bill = new Bill
                 {
-                    Tax = 10,
-                    TotalPrice = ((total / 100) * 10) + total,
+                    Tax = (int)ConstantValues.Tax,
+                    TotalPrice = total,
                     PurchaseDate = DateTime.Now.Date,
                     UserId = User.Identity.GetUserId()
                 };

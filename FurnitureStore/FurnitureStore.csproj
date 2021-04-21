@@ -193,18 +193,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202104112122587_CreateDatabase.cs" />
-    <Compile Include="Migrations\202104112122587_CreateDatabase.Designer.cs">
-      <DependentUpon>202104112122587_CreateDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202104142347360_SetUniqueConstraints.cs" />
-    <Compile Include="Migrations\202104142347360_SetUniqueConstraints.Designer.cs">
-      <DependentUpon>202104142347360_SetUniqueConstraints.cs</DependentUpon>
+    <Compile Include="Migrations\202104191531398_CreateDatabase.cs" />
+    <Compile Include="Migrations\202104191531398_CreateDatabase.Designer.cs">
+      <DependentUpon>202104191531398_CreateDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\ConstantValues.cs" />
     <Compile Include="Models\FurnitureStoreDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Product.cs" />
@@ -493,11 +490,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202104112122587_CreateDatabase.resx">
-      <DependentUpon>202104112122587_CreateDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202104142347360_SetUniqueConstraints.resx">
-      <DependentUpon>202104142347360_SetUniqueConstraints.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202104191531398_CreateDatabase.resx">
+      <DependentUpon>202104191531398_CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

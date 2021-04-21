@@ -30,20 +30,24 @@
         <div class="row">
             @foreach (var product in Model.PurchasedProducts)
             {
-                <div class="col-6">
-                    <h5 class="font-weight-bold">
-                        Naziv:
-                        <span class="font-weight-light">@product.ProductName</span>
-                    </h5>
-                    <h5 class="font-weight-bold">
-                        Količina:
-                        <span class="font-weight-light">@product.Quantity</span>
-                    </h5>
-                    <h5 class="font-weight-bold">
-                        Jedinična cena:
-                        <span class="font-weight-light">@product.UnitPrice DIN</span>
-                    </h5>
-                </div>
+            <div class="col-6">
+                <h5 class="font-weight-bold">
+                    Naziv:
+                    <span class="font-weight-light">@product.ProductName</span>
+                </h5>
+                <h5 class="font-weight-bold">
+                    Količina:
+                    <span class="font-weight-light">@product.Quantity</span>
+                </h5>
+                <h5 class="font-weight-bold">
+                    Jedinična cena:
+                    <span class="font-weight-light">@product.UnitPrice DIN</span>
+                </h5>
+                <h5 class="font-weight-bold">
+                    Ukupno:
+                    <span class="font-weight-light">@product.TotalPrice DIN</span>
+                </h5>
+            </div>
             }
         </div>
     </div>

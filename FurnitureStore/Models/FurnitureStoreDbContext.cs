@@ -57,8 +57,7 @@ namespace FurnitureStore.Models
         {
         }
 
-        public static FurnitureStoreDbContext Create()
-        
+        public static FurnitureStoreDbContext Create()        
         {
             return new FurnitureStoreDbContext();
         }

@@ -13,7 +13,7 @@ namespace FurnitureStore.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202104112122587_CreateDatabase"; }
+            get { return "202104191531398_CreateDatabase"; }
         }
         
         string IMigrationMetadata.Source

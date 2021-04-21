@@ -16,12 +16,10 @@
                     <tr>
                         <th>Naziv</th>
                         <th>Opis</th>
-                        <th>Akcije</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -65,21 +63,9 @@
                 columns: [
                     { data: "TypeName", className: "dt-center" },
                     { data: "Description", className: "dt-center table-primary" },
-                    {
-                        data: "Id",
-                        className: "dt-center",
-                        render: function (data) {
-                            return "<button type='button' class='btn btn-warning btn-sm m-1' data-toggle='modal' data-target='#modalAddOrEdit'"
-                                + " onclick=popupForm('@Url.Action("AddOrEdit", "ProductTypes")/" + data + "')><i class='fas fa-pencil-alt'></i> Izmeni</button>"
-                                + "<button type='button' class='btn btn-danger btn-sm m-1 btn-delete' data-toggle='modal' data-target='#modalDelete' data-user-id=" + data + "><i class='fa fa-trash'></i> Obriši</button> ";
-                        },
-                        orderable: false,
-                        searchable: false,
-                        width: "150px"
-                    }
                 ],
                 language: {
-                    emptyTable: "<div style='font-weight: 500;'>Tabela je prazna, klikni na <b>Dodaj kategoriju</b></div>",
+                    emptyTable: "<div style='font-weight: 500;'>Prodavnica trenutno ne poseduje nijednu kategoriju</div>",
                     "info": "Od _START_ do _END_ ukupno _TOTAL_",
                     "infoEmpty": "Od 0 do 0 ukupno 0",
                     "zeroRecords": "Traženi pojam ne postoji"

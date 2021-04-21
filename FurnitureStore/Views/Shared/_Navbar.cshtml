@@ -80,7 +80,7 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav mx-auto w-100 d-flex justify-content-end">
 
-                    @if (ViewContext.HttpContext.User.IsInRole(RoleName.Customer))
+                    @if (User.Identity.IsAuthenticated && !ViewContext.HttpContext.User.IsInRole(RoleName.Admin))
                     {
                         <li class="nav-item">
                             @Html.ActionLink("Početna", "Index", "Home", null, new { @class = "nav-link text-white" })
@@ -92,55 +92,60 @@
                         @using (var _context = new FurnitureStoreDbContext())
                         {
                             var shops = _context.Shops.ToList();
-                            if (shops.Any())
-                            {
-                                <div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
-                                    @foreach (var shop in shops)
-                                    {
+                            <div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+                                @if (shops.Any())
+                                {
+                                     foreach (var shop in shops)
+                                     {
                                         if (shop.Products.Any())
                                         {
                                             @Html.ActionLink(shop.ShopName, "Index", "Stores", new { id = shop.Id }, new { @class = "dropdown-item text-primary" })
                                         }
                                     }
-                                </div>
-                            }
-                        }
-                        </li>
-                        @*<li class="nav-item">
-                            @Html.ActionLink("Kontakt", "Contact", "Home", null, new { @class = "nav-link text-white" })
-                        </li>*@
-                        <li class="nav-item">
-                            @Html.ActionLink("Prodavnica", "Index", "Products", null, new { @class = "nav-link text-white" })
-                        </li>
-                    }
-                </ul>
-                @if (!ViewContext.HttpContext.User.IsInRole(RoleName.Admin) && !ViewContext.HttpContext.User.IsInRole(RoleName.Customer))
-                {
-                    <ul class="navbar-nav w-100 m-0">
-                        <li class="dropdown">
-                            <button class="btn btn-warning dropdown-toggle m-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Saloni
-                            </button>
-                            @using (var _context = new FurnitureStoreDbContext())
-                            {
-                                var shops = _context.Shops.ToList();
-                                if (shops.Any())
+                                }
+                                else
                                 {
-                                    <div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
-                                        @foreach (var shop in shops)
-                                        {
-                                            if (shop.Products.Any())
-                                            {
-                                                 @Html.ActionLink(shop.ShopName, "Index", "Stores", new { id = shop.Id }, new { @class = "dropdown-item text-primary" })
-                                            }
-                                        }
+                                    
+                                    <div class="dropdown-item text-primary">
+                                        Prodavnica nema salona
                                     </div>
                                 }
-                            }
-                        </li>
-                    </ul>
-                }
-                @Html.Partial("_LoginPartial")
+                            </div>
+                    }
+                </li>
+                @*<li class="nav-item">
+                    @Html.ActionLink("Kontakt", "Contact", "Home", null, new { @class = "nav-link text-white" })
+                </li>*@
+                <li class="nav-item">
+                    @Html.ActionLink("Prodavnica", "Index", "Products", null, new { @class = "nav-link text-white" })
+                </li>
+            }
+            else
+            {
+                <li class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle m-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Saloni
+                    </button>
+                    @using (var _context = new FurnitureStoreDbContext())
+                    {
+                        var shops = _context.Shops.ToList();
+                        if (shops.Any())
+                        {
+                            <div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+                                @foreach (var shop in shops)
+                                {
+                                    if (shop.Products.Any())
+                                    {
+                                        @Html.ActionLink(shop.ShopName, "Index", "Stores", new { id = shop.Id }, new { @class = "dropdown-item text-primary" })
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+                </li>
+            }
+                </ul>
+            @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>

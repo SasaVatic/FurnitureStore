@@ -31,22 +31,24 @@ namespace FurnitureStore.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         ShopName = c.String(nullable: false, maxLength: 50),
-                        OwnerName = c.String(nullable: false, maxLength: 100),
+                        OwnerName = c.String(nullable: false, maxLength: 50),
                         PhoneNumber = c.String(nullable: false, maxLength: 10),
                         Email = c.String(nullable: false, maxLength: 255),
                         WebPageURL = c.String(nullable: false, maxLength: 253),
                         PIB = c.Int(nullable: false),
                         BZR = c.String(nullable: false, maxLength: 13),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.PIB, unique: true)
+                .Index(t => t.BZR, unique: true);
             
             CreateTable(
                 "dbo.Products",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ProductKey = c.String(nullable: false, maxLength: 50),
-                        ProductName = c.String(nullable: false, maxLength: 100),
+                        ProductKey = c.String(nullable: false, maxLength: 30),
+                        ProductName = c.String(nullable: false, maxLength: 50),
                         MadeIn = c.String(nullable: false, maxLength: 100),
                         ProductionYear = c.Int(nullable: false),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -57,6 +59,7 @@ namespace FurnitureStore.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.ProductTypes", t => t.ProductTypeId, cascadeDelete: true)
                 .ForeignKey("dbo.Shops", t => t.ShopId, cascadeDelete: true)
+                .Index(t => t.ProductKey, unique: true)
                 .Index(t => t.ShopId)
                 .Index(t => t.ProductTypeId);
             
@@ -68,7 +71,8 @@ namespace FurnitureStore.Migrations
                         TypeName = c.String(nullable: false, maxLength: 50),
                         Description = c.String(nullable: false, maxLength: 500),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.TypeName, unique: true);
             
             CreateTable(
                 "dbo.UploadImages",
@@ -211,8 +215,12 @@ namespace FurnitureStore.Migrations
             DropIndex("dbo.Bills", new[] { "UserId" });
             DropIndex("dbo.Users", "UserNameIndex");
             DropIndex("dbo.UploadImages", new[] { "ProductId" });
+            DropIndex("dbo.ProductTypes", new[] { "TypeName" });
             DropIndex("dbo.Products", new[] { "ProductTypeId" });
             DropIndex("dbo.Products", new[] { "ShopId" });
+            DropIndex("dbo.Products", new[] { "ProductKey" });
+            DropIndex("dbo.Shops", new[] { "BZR" });
+            DropIndex("dbo.Shops", new[] { "PIB" });
             DropIndex("dbo.Addresses", new[] { "ShopId" });
             DropIndex("dbo.Addresses", new[] { "UserId" });
             DropTable("dbo.Roles");

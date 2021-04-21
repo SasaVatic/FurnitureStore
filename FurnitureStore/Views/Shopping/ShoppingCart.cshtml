@@ -1,4 +1,5 @@
-﻿@model FurnitureStore.ViewModels.ShoppingCartViewModel
+﻿@using FurnitureStore.Models
+@model FurnitureStore.ViewModels.ShoppingCartViewModel
 @{
     ViewBag.Title = "Korpa";
 }
@@ -22,59 +23,37 @@
                 <th class="text-center">Ukloni</th>
             </tr>
         </thead>
-        @*<tbody>
-            @if (Model != null)
-            {
-                if (Model.CartProducts.Any())
-                {
-                    //Ako se stranica refresuje ili joj se pristupi sa druge stranice
-                    //da ne bi dodavao na prethodno izracunat total resetuj total
-                    Model.BillTotalPrice = 0;
-                    foreach (var product in Model.CartProducts)
-                    {
-                        Model.BillTotalPrice += product.TotalPrice;
-                        <tr>
-                            <td class="text-center">@product.ProductName</td>
-                            <td class="text-center">@product.ShopName</td>
-                            <td class="text-center">@product.UnitPrice.ToString("#,##0.00") DIN</td>
-                            <td class="text-center" id="quantity">
-                                <button onclick="addToCart('@Url.Action("AddToCart", "Shopping", new { @id = product.ProductId })')" class="btn-dark mx-2" style="font-size:1rem;width:30px;height:30px;outline:none !important"> + </button>
-                                @product.Quantity
-                                <button onclick="removeFromCart('@Url.Action("RemoveFromCart", "Shopping", new { @id = product.ProductId })')" class="btn-dark mx-2" style="font-size:1rem;width:30px;height:30px;outline:none !important"> - </button>
-                            </td>
-                            <td class="text-center">@product.TotalPrice.ToString("#,##0.00") DIN</td>
-                            <td id="removeBtn" class="text-center font-weight-bolder"
-                                style="font-size: 2rem;cursor:pointer;"
-                                data-product-id="@product.ProductId"
-                                onclick="removeProduct()">
-                                &times;
-                            </td>
-                        </tr>
-                    }
-                    <tr>
-                        <td colspan="4">
-                            <h3>Ukupno:</h3>
-                        </td>
-                        <td colspan="2">
-                            @Model.BillTotalPrice.ToString("#,##0.00") DIN
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>*@
     </table>
     <div class="row">
         <div class="col">
             <hr />
-                <h3 class="text-primary font-weight-bolder">
-                    Račun: 
-                    <span class="font-weight-light" id="billTotal">
-                        @if (Model != null && Model.CartProducts.Any())
-                        {
-                            @Model.BillTotalPrice.ToString("#,##0.00 DIN");
-                        }
+            <h4 class="text-primary font-weight-bolder">
+                Ukupna cena:
+                @if (Model != null && Model.CartProducts.Any())
+                {
+                    <span class="font-weight-light" id="billTotalWithOutTax">
+                        @Model.BillTotalPriceWithOutTax.ToString("#,##0.00 DIN")
                     </span>
-                </h3>
+                }
+            </h4>
+            <h4 class="text-primary font-weight-bolder">
+                Porez:
+                @if (Model != null && Model.CartProducts.Any())
+                {                            
+                    <span class="font-weight-light" id="tax">
+                        @ConstantValues.Tax %
+                    </span>
+                }
+            </h4>
+            <h3 class="text-primary font-weight-bolder">
+                Račun:                
+                    @if (Model != null && Model.CartProducts.Any())
+                    {
+                        <span class="font-weight-light" id="billTotalWithTax">
+                            @Model.BillTotalPriceWithTax.ToString("#,##0.00 DIN")
+                        </span>
+                    }
+            </h3>
             <hr />
         </div>
     </div>
@@ -196,9 +175,11 @@
 
                         // konvertuj cenu u odgovarajuci format
                         let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+                        let priceTax = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.totalTax);
 
                         $("#cartItem").text(data.counter);
-                        $("#billTotal").text(price); // ukupna cena za racun
+                        $("#billTotalWithTax").text(priceTax); // ukupna cena za racun sa porezom
+                        $("#billTotalWithOutTax").text(price); // ukupna cena za racun sa porezom
                     }
                     else {
                         // Ako nema na stanju vise obavesti korisnika
@@ -221,15 +202,19 @@
 
                         // konvertuj cenu u odgovarajuci format
                         let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+                        let priceTax = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.totalTax);
 
                         $("#cartItem").text(data.counter); // broj proizvoda u korpi
-                        $("#billTotal").text(price); // ukupna cena za racun
+                        $("#billTotalWithTax").text(priceTax); // ukupna cena za racun sa porezom
+                        $("#billTotalWithOutTax").text(price); // ukupna cena za racun bez poreza
                     }
                     else {
                         table.ajax.reload(); // posto je korpa prazna reload-uj tabelu
 
                         $(".btn-buy").remove(); // posto je tabela prazna ukloni kupi dugme
-                        $("#billTotal").remove(); // posto je tabela prazna ukloni cenu
+                        $("#billTotalWithTax").remove(); // posto je tabela prazna ukloni cenu
+                        $("#billTotalWithOutTax").remove();
+                        $("#tax").remove();
                         $("#cartItem").text(data.counter); // vratice 0 pa ce counter biti 0 posto nema nista u korpi
                     }
                 }
@@ -247,13 +232,17 @@
 
                         // konvertuj cenu u odgovarajuci format
                         let price = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.total);
+                        let priceTax = new Intl.NumberFormat("sr-RS", { style: "currency", currency: "DIN" }).format(data.totalTax);
 
                         $("#cartItem").text(data.counter); // broj proizvoda u korpi
-                        $("#billTotal").text(price); // ukupna cena za racun
+                        $("#billTotalWithTax").text(priceTax); // ukupna cena za racun sa porezom
+                        $("#billTotalWithOutTax").text(price); // ukupna cena za racun bez poreza
                     }
                     if (data.isEmpty) {
 
-                        $("#billTotal").remove(); // posto je tabela prazna ukloni cenu
+                        $("#billTotalWithTax").remove(); // posto je tabela prazna ukloni cenu sa porezom
+                        $("#billTotalWithOutTax").remove(); // posto je tabela prazna ukloni cenu bez poreza
+                        $("#tax").remove(); // ukloni porez
                         $(".btn-buy").remove(); // posto je tabela prazna ukloni kupi dugme
                     }
                 }
